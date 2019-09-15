@@ -11,12 +11,15 @@ import java.io.IOException;
 public class Main extends Application {
     @Override
     public void start(Stage primaryStage) throws IOException {
-        FXMLLoader loader = new FXMLLoader();
-        loader.setLocation(this.getClass().getResource("resources/Home.fxml"));
-        Parent layout = loader.load();
-        Scene scene = new Scene(layout);
-        primaryStage.setScene(scene);
-        primaryStage.show();
+        System.out.println(this.getClass().getResource("resources/Home.fxml"));
+
+        // Not working with javaFX 13 D: vm arguments not helping either
+//        FXMLLoader loader = new FXMLLoader();
+//        loader.setLocation(this.getClass().getResource("resources/Home.fxml"));
+//        Parent layout = loader.load();
+//        Scene scene = new Scene(layout);
+//        primaryStage.setScene(scene);
+//        primaryStage.show();
     }
 
     public static void main(String[] args) {
