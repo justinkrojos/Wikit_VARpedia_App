@@ -29,4 +29,19 @@ public class HomeController {
     @FXML
     private Pane _player;
 
+    @FXML
+    private void handleBtnPlay() {
+        System.out.println("Playing");
+    }
+
+    @FXML
+    private void handleBtnDel() {
+        System.out.println("Deleting");
+    }
+
+    @FXML
+    private void handleBtnCreate() {
+        System.out.println("Creating");
+    }
+
 }
