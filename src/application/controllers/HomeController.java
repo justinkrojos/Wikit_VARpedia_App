@@ -1,10 +1,16 @@
 package application.controllers;
 
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
+import javafx.scene.Parent;
+import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.ListView;
 import javafx.scene.layout.Pane;
 import javafx.scene.text.Text;
+import javafx.stage.Stage;
+
+import java.io.IOException;
 
 public class HomeController {
 
@@ -40,8 +46,15 @@ public class HomeController {
     }
 
     @FXML
-    private void handleBtnCreate() {
+    private void handleBtnCreate() throws IOException {
         System.out.println("Creating");
+ /*       FXMLLoader loader = new FXMLLoader();
+        loader.setLocation(this.getClass().getResource("resources/Home.fxml"));
+        Parent layout = loader.load();
+        Scene scene = new Scene(layout);
+        Stage creationStage = new Stage();
+        creationStage.setScene(scene);
+        creationStage.show();*/
     }
 
 }
