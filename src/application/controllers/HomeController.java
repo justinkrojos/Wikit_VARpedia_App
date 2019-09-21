@@ -40,7 +40,7 @@ public class HomeController {
     private void handleBtnPlay() {
         System.out.println("Playing");
         System.out.println(Main.getCreationDir());
-                
+
     }
 
     @FXML
