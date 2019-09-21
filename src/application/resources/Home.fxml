@@ -15,6 +15,6 @@
       <Button fx:id="btnDel" layoutX="65.0" layoutY="680.0" mnemonicParsing="false" onAction="#handleBtnDel" text="Delete" />
       <Button fx:id="btnCreate" layoutX="151.0" layoutY="680.0" mnemonicParsing="false" onAction="#handleBtnCreate" text="Create" />
       <Pane fx:id="_player" layoutX="225.0" layoutY="48.0" prefHeight="630.0" prefWidth="944.0" />
-      <Button layoutX="126.0" layoutY="25.0" mnemonicParsing="false" text="Refresh" />
+      <Button fx:id="btnRefresh" layoutX="126.0" layoutY="25.0" mnemonicParsing="false" onAction="#handleBtnRefresh" text="Refresh" />
    </children>
 </AnchorPane>

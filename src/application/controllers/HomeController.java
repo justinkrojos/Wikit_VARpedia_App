@@ -37,9 +37,12 @@ public class HomeController {
     private Pane _player;
 
     @FXML
+    private Button btnRefresh;
+
+    @FXML
     private void handleBtnPlay() {
         System.out.println("Playing");
-        System.out.println(Main.getCreationDir());
+       // System.out.println(Main.getCreationDir());
 
     }
 
@@ -58,6 +61,11 @@ public class HomeController {
         Stage creationStage = new Stage();
         creationStage.setScene(scene);
         creationStage.show();
+    }
+
+    @FXML
+    public void handleBtnRefresh() {
+        System.out.println("Refresh");
     }
 
 }
