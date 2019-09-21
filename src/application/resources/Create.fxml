@@ -16,7 +16,7 @@
       <Text layoutX="14.0" layoutY="107.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Creation Name" />
       <TextField fx:id="_creationNameField" layoutX="11.0" layoutY="110.0" />
       <Text layoutX="22.0" layoutY="692.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Create Creation" />
-      <Button fx:id="btnCreate" layoutX="134.0" layoutY="674.0" mnemonicParsing="false" text="CREATE" />
+      <Button fx:id="btnCreate" layoutX="134.0" layoutY="674.0" mnemonicParsing="false" onAction="#handleCreate" text="CREATE" />
       <Text layoutX="14.0" layoutY="179.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Play Selected Text" />
       <Button fx:id="btnPlay" layoutX="144.0" layoutY="161.0" mnemonicParsing="false" text="Play" />
       <Text layoutX="14.0" layoutY="158.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Highlight text to select it." />

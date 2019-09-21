@@ -2,6 +2,7 @@ package application.controllers;
 
 import application.WikitSearchTask;
 import javafx.concurrent.WorkerStateEvent;
+import javafx.event.Event;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.scene.control.Alert;
@@ -58,5 +59,47 @@ public class CreateController {
         });
 
 
+    }
+
+    // Method below only handles when one chunk is highlighted
+    @FXML
+    public void handleCreate() {
+
+        System.out.println(_creationNameField.getSelectedText());
+
+        if (_termField.getText().isEmpty()) {
+            Alert alert = new Alert(Alert.AlertType.WARNING);
+            alert.setTitle("Wikit Search");
+            alert.setHeaderText("Please enter a valid searchh term");
+            alert.setContentText("Enter a valid search term and try again.");
+            alert.showAndWait();
+        }
+        else if (_creationNameField.getText().isEmpty()) {
+            Alert alert = new Alert(Alert.AlertType.WARNING);
+            alert.setTitle("Wikit Search");
+            alert.setHeaderText("Please enter a valid creation term");
+            alert.setContentText("A creation term was not entered.");
+            alert.showAndWait();
+        }
+        else {
+            if (_textArea.getSelectedText().isEmpty()) { // if none highighted, selects all text by default??
+                System.out.println(_textArea.getText());
+            }
+            else {
+                System.out.println(_textArea.getSelectedText());
+            }
+        }
+
+    }
+
+    @FXML
+    public void handleWikitEdits(TextArea _textArea) {
+
+        _textArea.setOnContextMenuRequested(new EventHandler<Event>() {
+            @Override
+            public void handle(Event event) {
+                System.out.println(_textArea.getSelectedText());
+            }
+        });
     }
 }
