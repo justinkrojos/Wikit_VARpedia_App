@@ -91,15 +91,5 @@ public class CreateController {
         }
 
     }
-
-    @FXML
-    public void handleWikitEdits(TextArea _textArea) {
-
-        _textArea.setOnContextMenuRequested(new EventHandler<Event>() {
-            @Override
-            public void handle(Event event) {
-                System.out.println(_textArea.getSelectedText());
-            }
-        });
-    }
+            
 }
