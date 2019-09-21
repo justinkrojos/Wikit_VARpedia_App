@@ -1,5 +1,6 @@
 package application.controllers;
 
+import application.Main;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
@@ -48,13 +49,13 @@ public class HomeController {
     @FXML
     private void handleBtnCreate() throws IOException {
         System.out.println("Creating");
- /*       FXMLLoader loader = new FXMLLoader();
-        loader.setLocation(this.getClass().getResource("resources/Home.fxml"));
+        FXMLLoader loader = new FXMLLoader();
+        loader.setLocation(Main.class.getResource("resources/Create.fxml"));
         Parent layout = loader.load();
         Scene scene = new Scene(layout);
         Stage creationStage = new Stage();
         creationStage.setScene(scene);
-        creationStage.show();*/
+        creationStage.show();
     }
 
 }
