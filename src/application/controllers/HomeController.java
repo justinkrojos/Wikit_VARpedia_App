@@ -59,11 +59,12 @@ public class HomeController {
             return;
         }
 
+
     }
 
     @FXML
     private void handleBtnDel() {
-        System.out.println("Deleting");
+        //System.out.println("Deleting");
         if (_selectedItem == null) {
             alertNullSelection();
             return;
@@ -92,7 +93,7 @@ public class HomeController {
 
     @FXML
     private void handleBtnCreate() throws IOException {
-        System.out.println("Creating");
+        //System.out.println("Creating");
         FXMLLoader loader = new FXMLLoader();
         loader.setLocation(Main.class.getResource("resources/Create.fxml"));
         Parent layout = loader.load();
@@ -104,7 +105,7 @@ public class HomeController {
 
     @FXML
     public void handleBtnRefresh() {
-        System.out.println("Refresh");
+        //System.out.println("Refresh");
         updateListTree();
     }
 
@@ -135,7 +136,7 @@ public class HomeController {
     @FXML
     private void selectItem() {
         _selectedItem = (String) _creationList.getSelectionModel().getSelectedItem();
-        System.out.println(_selectedItem);
+        //System.out.println(_selectedItem);
 
     }
 
