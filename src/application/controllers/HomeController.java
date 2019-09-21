@@ -55,13 +55,25 @@ public class HomeController {
     private Button btnRefresh;
 
     @FXML
+    private Button btnPause;
+
+    @FXML
+    private Button btnMute;
+
+    @FXML
+    private Button btnForward;
+
+    @FXML
+    private Button btnBackward;
+
+    @FXML
     private void handleBtnPlay() {
         System.out.println("Playing");
         if (_selectedItem == null) {
             alertNullSelection();
             return;
         }
-        System.out.println(Main.getCreationDir()+"/"+_selectedItem+"/"+_selectedItem+".mp4");
+        //System.out.println(Main.getCreationDir()+"/"+_selectedItem+"/"+_selectedItem+".mp4");
         File fileUrl = new File(Main.getCreationDir()+"/"+_selectedItem+"/"+_selectedItem+".mp4");
         Media video = new Media(fileUrl.toURI().toString());
         MediaPlayer player = new MediaPlayer(video);

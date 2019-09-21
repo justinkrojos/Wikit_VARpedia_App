@@ -14,7 +14,11 @@
       <Button fx:id="btnPlay" layoutX="16.0" layoutY="680.0" mnemonicParsing="false" onAction="#handleBtnPlay" text="Play" />
       <Button fx:id="btnDel" layoutX="65.0" layoutY="680.0" mnemonicParsing="false" onAction="#handleBtnDel" text="Delete" />
       <Button fx:id="btnCreate" layoutX="151.0" layoutY="680.0" mnemonicParsing="false" onAction="#handleBtnCreate" text="Create" />
-      <Pane fx:id="_player" layoutX="225.0" layoutY="48.0" prefHeight="630.0" prefWidth="944.0" />
+      <Pane fx:id="_player" layoutX="226.0" layoutY="51.0" prefHeight="600.0" prefWidth="800.0" />
       <Button fx:id="btnRefresh" layoutX="126.0" layoutY="25.0" mnemonicParsing="false" onAction="#handleBtnRefresh" text="Refresh" />
+      <Button fx:id="btnPause" layoutX="640.0" layoutY="654.0" mnemonicParsing="false" text="Pause" />
+      <Button fx:id="btnMute" layoutX="589.0" layoutY="654.0" mnemonicParsing="false" text="Mute" />
+      <Button fx:id="btnBackward" layoutX="549.0" layoutY="654.0" mnemonicParsing="false" text="&lt;&lt;" />
+      <Button fx:id="btnForward" layoutX="697.0" layoutY="654.0" mnemonicParsing="false" text="&gt;&gt;" />
    </children>
 </AnchorPane>
