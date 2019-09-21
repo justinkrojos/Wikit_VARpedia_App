@@ -12,7 +12,7 @@
       <TextArea fx:id="_textArea" layoutX="252.0" layoutY="34.0" prefHeight="600.0" prefWidth="800.0" />
       <Text layoutX="14.0" layoutY="39.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Wikit Search Term" />
       <TextField fx:id="_termField" layoutX="11.0" layoutY="42.0" />
-      <Button fx:id="btnSearch" layoutX="120.0" layoutY="68.0" mnemonicParsing="false" text="Search" />
+      <Button fx:id="btnSearch" layoutX="120.0" layoutY="68.0" mnemonicParsing="false" onAction="#handleSearch" text="Search" />
       <Text layoutX="14.0" layoutY="107.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Creation Name" />
       <TextField fx:id="_creationNameField" layoutX="11.0" layoutY="110.0" />
       <Text layoutX="22.0" layoutY="692.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Create Creation" />

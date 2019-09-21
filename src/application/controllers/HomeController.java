@@ -23,8 +23,12 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Optional;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
 
 public class HomeController {
+
+    private ExecutorService team = Executors.newSingleThreadExecutor();
 
     private final File _folder = new File(Main.getCreationDir());
     private ObservableList<String> _items;
