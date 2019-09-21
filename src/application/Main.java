@@ -12,7 +12,7 @@ import java.net.URISyntaxException;
 
 public class Main extends Application {
 
-    private Stage _primaryStage;
+    //private Stage _primaryStage;
 
     //private String _creationDir;
 
@@ -20,7 +20,7 @@ public class Main extends Application {
     public void start(Stage primaryStage) throws IOException {
         //System.out.println(this.getClass().getResource("resources/Home.fxml"));
 
-        _primaryStage = primaryStage;
+        //_primaryStage = primaryStage;
 
         FXMLLoader loader = new FXMLLoader();
         loader.setLocation(this.getClass().getResource("resources/Home.fxml"));
@@ -30,9 +30,9 @@ public class Main extends Application {
         primaryStage.show();
     }
 
-    public Stage getPrimaryStage() {
+/*    public Stage getPrimaryStage() {
         return _primaryStage;
-    }
+    }*/
 
     public static String getCreationDir() {
         String creationsDir = null;
