@@ -57,6 +57,7 @@ public class Main extends Application {
 
             //String systemDir = System.getProperty("user.dir");
             String creationsDir = systemDir + "/creations";*/
+            //System.out.println(System.getProperty("user.dir"));
 
             String creationsDir = getCreationDir();
             String cmd = "[ ! -d " + creationsDir + " ]";
