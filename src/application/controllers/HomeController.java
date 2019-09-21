@@ -12,6 +12,9 @@ import javafx.scene.control.Button;
 import javafx.scene.control.ButtonType;
 import javafx.scene.control.ListView;
 import javafx.scene.layout.Pane;
+import javafx.scene.media.Media;
+import javafx.scene.media.MediaPlayer;
+import javafx.scene.media.MediaView;
 import javafx.scene.text.Text;
 import javafx.stage.Stage;
 
@@ -58,8 +61,21 @@ public class HomeController {
             alertNullSelection();
             return;
         }
+        System.out.println(Main.getCreationDir()+"/"+_selectedItem+"/"+_selectedItem+".mp4");
+        File fileUrl = new File(Main.getCreationDir()+"/"+_selectedItem+"/"+_selectedItem+".mp4");
+        Media video = new Media(fileUrl.toURI().toString());
+        MediaPlayer player = new MediaPlayer(video);
+        player.setAutoPlay(true);
+        MediaView mediaView = new MediaView(player);
+        player.setOnReady(new Runnable() {
+            @Override
+            public void run() {
+                //Some observable map thing goes here.
 
+            }
+        });
 
+        _player.getChildren().add(mediaView);
     }
 
     @FXML
