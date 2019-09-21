@@ -74,10 +74,6 @@ public class HomeController {
     @FXML
     public void handleBtnRefresh() {
         System.out.println("Refresh");
-        refreshList();
-    }
-
-    public void refreshList() {
         updateListTree();
     }
 
