@@ -61,7 +61,8 @@ public class GetImagesTask extends Task<Void> {
         //System.out.println(html.trim());
         for (String word: html.split(" ")) {
             //System.out.println(word);
-            if (word.matches("(?i)url.*")) {
+            //if (word.matches("(?i)url.*")) {
+            if (word.matches(".*live.staticflickr.com.*") && word.matches("(?i)url.*")) {
                 //System.out.println(word);
                 word = word.replace("url(//","http://");
                 word = word.replace(")\"","");
