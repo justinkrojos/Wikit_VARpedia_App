@@ -77,6 +77,7 @@ public class CreateController {
                 }
                 return;
             }
+            //TODO what to do when creation name works???
 
 
         } catch (IOException | InterruptedException e) {
