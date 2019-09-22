@@ -1,5 +1,6 @@
 package application.controllers;
 
+import application.GetImagesTask;
 import application.WikitSearchTask;
 import javafx.concurrent.WorkerStateEvent;
 import javafx.event.EventHandler;
@@ -16,6 +17,15 @@ import java.util.concurrent.Executors;
 public class CreateController {
 
     private ExecutorService team = Executors.newSingleThreadExecutor();
+
+    @FXML
+    private TextField _numImageField;
+
+    @FXML
+    private Button btnImage;
+
+    @FXML
+    private Button btnCheckCreationName;
 
     @FXML
     private TextArea _textArea;
@@ -53,10 +63,22 @@ public class CreateController {
                     alert.showAndWait();
                     return;
                 }
+
                 _textArea.setText(task.getOutput());
             }
         });
+    }
 
+    @FXML
+    private void handleGetImages() {
+        String term = _termField.getText();
+        int numImages = Integer.parseInt(_numImageField.getText());
 
+        getImages(term,numImages);
+    }
+
+    private void getImages(String term, int numImages) {
+        GetImagesTask task = new GetImagesTask(term, numImages);
+        team.submit(task);
     }
 }
