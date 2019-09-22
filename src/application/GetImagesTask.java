@@ -1,6 +1,7 @@
 package application;
 
 import javafx.concurrent.Task;
+import javafx.scene.image.Image;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -30,13 +31,14 @@ public class GetImagesTask extends Task<Void> {
         _exit = getHTMLP.waitFor();
         BufferedReader stdout = new BufferedReader(new InputStreamReader(getHTMLP.getInputStream()));
         System.out.println(stdout.readLine());*/
-        getHTML(_term);
+        getImages(_term,_numImages);
 
+        System.out.println("PRay");
 
         return null;
     }
 
-    private List<String> getHTML(String term) {
+    private List<Image> getImages(String term, int numImages) {
         String urlString = "https://www.flickr.com/search/?text=" + _term;
         String html = "";
         try {
@@ -54,28 +56,29 @@ public class GetImagesTask extends Task<Void> {
         } catch (IOException e) {
             e.printStackTrace();
         }
+
         //System.out.println(html);
         List<String> output = new ArrayList<String>();
 
+        //System.out.println(html.trim());
         for (String word: html.split(" ")) {
-
-        }
-
-
-        //System.out.println(html.split(" "));
-/*        for (String word : html.split(" ")) {
-
-            if (word.matches("url(//*")) {
-
+            //System.out.println(word);
+            if (word.matches("(?i)url.*")) {
+                //System.out.println(word);
+                word = word.replace("url(//","http://");
+                word = word.replace(")\"","");
+                //System.out.println(word);
                 output.add(word);
             }
-            System.out.println(word);
         }
 
-        for (String i : output) {
-            System.out.println(i);
-        }*/
-        return output;
+        List<Image> imageList = new ArrayList<Image>();
+        for (int i = 0; i < numImages; i++) {
+            System.out.println(output.get(i));
+            imageList.add(new Image(output.get(i),800,600,false,false));
+        }
+
+        return imageList;
 
     }
 }
