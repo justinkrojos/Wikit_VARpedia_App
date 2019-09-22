@@ -74,10 +74,16 @@ public class CreateController {
                     ProcessBuilder overwritePB = new ProcessBuilder("bash", "-c", cmdOverwrite);
                     Process overwriteP = overwritePB.start();
                     overwriteP.waitFor();
+                    _creationNameField.setDisable(true);
+                    btnCheckCreationName.setText("Success!");
+                    btnCheckCreationName.setDisable(true);
                 }
                 return;
             }
-            //TODO what to do when creation name works???
+            _creationNameField.setDisable(true);
+            btnCheckCreationName.setText("Success!");
+            btnCheckCreationName.setDisable(true);
+
 
 
         } catch (IOException | InterruptedException e) {
@@ -102,6 +108,9 @@ public class CreateController {
                 }
 
                 _textArea.setText(task.getOutput());
+                btnSearch.setText("Success!");
+                btnSearch.setDisable(true);
+                _termField.setDisable(true);
             }
         });
     }
