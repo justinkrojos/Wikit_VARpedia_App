@@ -16,6 +16,8 @@ public class GetImagesTask extends Task<Void> {
     private String _term;
     private int _numImages;
 
+    private List<Image> _imageList;
+
     private int _exit;
 
     public GetImagesTask(String term, int numImages) {
@@ -25,17 +27,13 @@ public class GetImagesTask extends Task<Void> {
 
     @Override
     protected Void call() throws Exception {
-/*        String url = "wget https://www.flickr.com/search/?text=" + _term;
-        ProcessBuilder getHTML = new ProcessBuilder("bash", "-c", "pwd");
-        Process getHTMLP = getHTML.start();
-        _exit = getHTMLP.waitFor();
-        BufferedReader stdout = new BufferedReader(new InputStreamReader(getHTMLP.getInputStream()));
-        System.out.println(stdout.readLine());*/
-        getImages(_term,_numImages);
-
-        System.out.println("PRay");
-
+        List<Image> imageList = getImages(_term,_numImages);
+        _imageList = imageList;
         return null;
+    }
+
+    public List<Image> getImages() {
+        return _imageList;
     }
 
     private List<Image> getImages(String term, int numImages) {
