@@ -4,10 +4,12 @@ import application.GetImagesTask;
 import application.Main;
 import application.WikitSearchTask;
 import javafx.concurrent.WorkerStateEvent;
+import javafx.event.ActionEvent;
 import javafx.event.Event;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
+import javafx.scene.input.MouseEvent;
 import javafx.stage.Stage;
 
 import java.io.IOException;
@@ -44,7 +46,10 @@ public class CreateController {
     private Button btnPlay;
 
     @FXML
-    private Button btnSave;
+    private Button btnMaleAudio;
+
+    @FXML
+    private Button btnFemaleAudio;
 
     @FXML
     private Button btnCreate;
@@ -203,7 +208,11 @@ public class CreateController {
                 alert.setContentText("Please highlight a maximum of 20 words and try again.");
                 alert.showAndWait();
             }
-            else { // tts - need to make cleaner.
+            else { // tts
+
+                // PREVIEW AS FEMALE - echo {"(voice_akl_nz_cw_cg_cg)",'(SayText "Hello There Young Sir")'} | bash -c festival
+                // PREVIEW AS MALE - echo {"(voice_akl_nz_jdt_diphone)",'(SayText "Hello There Young Sir")'} | bash -c festival
+
                 String cmd = "echo \"" + _textArea.getSelectedText() + "\" | festival --tts";
                 ProcessBuilder previewAudiopb1 = new ProcessBuilder("bash", "-c", cmd);
                 Process process1 = previewAudiopb1.start();
@@ -212,8 +221,11 @@ public class CreateController {
     }
 
     @FXML
-    public void handleSaveAudioBtn() throws IOException {
+    public void handleSaveAudioBtn(ActionEvent event) throws IOException {
 
+        Button button = (Button)event.getSource();
+
+        //ERROR HANDLING
         if (_termField.getText().isEmpty()) {
             Alert alert = new Alert(Alert.AlertType.WARNING);
             alert.setTitle("Wikit Search");
@@ -247,10 +259,22 @@ public class CreateController {
             else { // Create file
                 if (btnCheckCreationName.isDisabled()) { // create audio file in creation directory
                     // AUDIO NAME error handling? i.e. AUDIO NAME already exists?
-                    String cmd = "mkdir -p " + Main.getCreationDir() + "/" + _creationNameField.getText() +"/audio && echo \"" + _textArea.getSelectedText() + "\" | text2wave -o " + Main.getCreationDir() + "/" + _creationNameField.getText() + "/audio/'" + _audioName.getText() + "'.wav";
+
+                    String cmd = "";
+                    if (button.equals(btnMaleAudio)) { // Male audio chosen
+                        cmd = "mkdir -p " + Main.getCreationDir() + "/" + _creationNameField.getText() +"/audio && " +
+                                "echo \"" + _textArea.getSelectedText() + "\" | text2wave -o " + Main.getCreationDir() + "/" + _creationNameField.getText() + "/audio/'" + _audioName.getText() + "'.wav -eval \"(voice_akl_nz_jdt_diphone)\"";
+                    }
+                    else { // Must be female: only two buttons trigger this method.
+                        cmd = "mkdir -p " + Main.getCreationDir() + "/" + _creationNameField.getText() +"/audio && " +
+                                "echo \"" + _textArea.getSelectedText() + "\" | text2wave -o " + Main.getCreationDir() + "/" + _creationNameField.getText() + "/audio/'" + _audioName.getText() + "'.wav -eval \"(voice_akl_nz_cw_cg_cg)\"";
+                    }
+
+                    // String cmd = "mkdir -p " + Main.getCreationDir() + "/" + _creationNameField.getText() +"/audio && echo \"" + _textArea.getSelectedText() + "\" | text2wave -o " + Main.getCreationDir() + "/" + _creationNameField.getText() + "/audio/'" + _audioName.getText() + "'.wav";
                     ProcessBuilder saveAudiopb = new ProcessBuilder("bash", "-c", cmd);
                     Process process1 = saveAudiopb.start();
                     _audioName.clear();
+                    // Add success?
                     _audioName.setPromptText("Name Selected Audio");
                 }
                 else { // no creation name/directory given..
