@@ -213,11 +213,12 @@ public class CreateController {
 
     @FXML
     public void handleSaveAudioBtn() throws IOException {
-        if (_audioName.getText().isEmpty()) { // No audio name given
+
+        if (_termField.getText().isEmpty()) {
             Alert alert = new Alert(Alert.AlertType.WARNING);
             alert.setTitle("Wikit Search");
-            alert.setHeaderText("Audio file is unnamed");
-            alert.setContentText("Please enter a name for the audio file and try again.");
+            alert.setHeaderText("No words were highlighted");
+            alert.setContentText("Please wikit search a term and try again.");
             alert.showAndWait();
         }
         else if (_textArea.getSelectedText().isEmpty()) { // if none highighted, alerts that none was highlighted
@@ -225,6 +226,13 @@ public class CreateController {
             alert.setTitle("Wikit Search");
             alert.setHeaderText("No words were highlighted");
             alert.setContentText("Please highlight a maximum of 20 words and try again.");
+            alert.showAndWait();
+        }
+        else if (_audioName.getText().isEmpty()) { // No audio name given
+            Alert alert = new Alert(Alert.AlertType.WARNING);
+            alert.setTitle("Wikit Search");
+            alert.setHeaderText("Audio file is unnamed");
+            alert.setContentText("Please enter a name for the audio file and try again.");
             alert.showAndWait();
         }
         else {
@@ -237,8 +245,21 @@ public class CreateController {
                 alert.showAndWait();
             }
             else { // Create file
-                if (btnCheckCreationName.isDisabled()) {
-                    System.out.println("NICE");
+                if (btnCheckCreationName.isDisabled()) { // create audio file in creation directory
+                    // AUDIO NAME error handling? i.e. AUDIO NAME already exists?
+                    String cmd = "mkdir -p " + Main.getCreationDir() + "/" + _creationNameField.getText() +"/audio && echo \"" + _textArea.getSelectedText() + "\" | text2wave -o " + Main.getCreationDir() + "/" + _creationNameField.getText() + "/audio/'" + _audioName.getText() + "'.wav";
+                    ProcessBuilder saveAudiopb = new ProcessBuilder("bash", "-c", cmd);
+                    Process process1 = saveAudiopb.start();
+                    _audioName.clear();
+                    _audioName.setPromptText("Name Selected Audio");
+                }
+                else { // no creation name/directory given..
+                    Alert alert = new Alert(Alert.AlertType.WARNING);
+                    alert.setTitle("Wikit Search");
+                    alert.setHeaderText("Creation is unnamed");
+                    alert.setContentText("Please name your creation and try again.");
+                    alert.showAndWait();
+
                 }
 
             }
