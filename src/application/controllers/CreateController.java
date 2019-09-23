@@ -50,6 +50,9 @@ public class CreateController {
     private Button btnCreate;
 
     @FXML
+    private TextField _audioName;
+
+    @FXML
     public void handleCreationName() {
         String creationDir = Main.getCreationDir();
         String creationFile = creationDir + "/" +_creationNameField.getText();
@@ -207,5 +210,4 @@ public class CreateController {
             }
         }
     }
-            
 }
