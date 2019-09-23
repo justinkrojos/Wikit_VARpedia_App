@@ -210,4 +210,42 @@ public class CreateController {
             }
         }
     }
+
+    @FXML
+    public void handleSaveAudioBtn() throws IOException {
+        if (_audioName.getText().isEmpty()) { // No audio name given
+            Alert alert = new Alert(Alert.AlertType.WARNING);
+            alert.setTitle("Wikit Search");
+            alert.setHeaderText("Audio file is unnamed");
+            alert.setContentText("Please enter a name for the audio file and try again.");
+            alert.showAndWait();
+        }
+        else if (_textArea.getSelectedText().isEmpty()) { // if none highighted, alerts that none was highlighted
+            Alert alert = new Alert(Alert.AlertType.WARNING);
+            alert.setTitle("Wikit Search");
+            alert.setHeaderText("No words were highlighted");
+            alert.setContentText("Please highlight a maximum of 20 words and try again.");
+            alert.showAndWait();
+        }
+        else {
+            String[] words = _textArea.getSelectedText().split("\\s+");
+            if (words.length > 20) { // alerts if maxmimum word length exceeded
+                Alert alert = new Alert(Alert.AlertType.WARNING);
+                alert.setTitle("Wikit Search");
+                alert.setHeaderText("Word Maximum Exceeded");
+                alert.setContentText("Please highlight a maximum of 20 words and try again.");
+                alert.showAndWait();
+            }
+            else { // Create file
+                if (btnCheckCreationName.isDisabled()) {
+                    System.out.println("NICE");
+                }
+
+            }
+        }
+        // Save btn should create mp3 file and store it into a directory
+        // Male or Female voices (for now)
+        // When Create btn clicked: pop-up window that shows all mp3 files, with male/female button included that previews audio
+    }
+
 }
