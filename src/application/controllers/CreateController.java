@@ -181,7 +181,7 @@ public class CreateController {
         task.setOnSucceeded(new EventHandler<WorkerStateEvent>() {
             @Override
             public void handle(WorkerStateEvent workerStateEvent) {
-                //TODO
+                btnImage.setText("Success!");
             }
         });
     }
