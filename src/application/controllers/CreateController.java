@@ -180,33 +180,32 @@ public class CreateController {
 
     // Method below only handles when one chunk is highlighted
     @FXML
-    public void handleCreate() {
+    public void handleAudioPreview() throws IOException {
 
-        System.out.println(_creationNameField.getSelectedText());
+        // System.out.println(_creationNameField.getSelectedText());
 
-        if (_termField.getText().isEmpty()) {
+        if (_textArea.getSelectedText().isEmpty()) { // if none highighted, alerts that none was highlighted
             Alert alert = new Alert(Alert.AlertType.WARNING);
             alert.setTitle("Wikit Search");
-            alert.setHeaderText("Please enter a valid searchh term");
-            alert.setContentText("Enter a valid search term and try again.");
-            alert.showAndWait();
-        }
-        else if (_creationNameField.getText().isEmpty()) {
-            Alert alert = new Alert(Alert.AlertType.WARNING);
-            alert.setTitle("Wikit Search");
-            alert.setHeaderText("Please enter a valid creation term");
-            alert.setContentText("A creation term was not entered.");
+            alert.setHeaderText("No words were highlighted");
+            alert.setContentText("Please highlight a maximum of 20 words and try again.");
             alert.showAndWait();
         }
         else {
-            if (_textArea.getSelectedText().isEmpty()) { // if none highighted, selects all text by default??
-                System.out.println(_textArea.getText());
+            String[] words = _textArea.getSelectedText().split("\\s+");
+            if (words.length > 20) { // alerts if maxmimum word length exceeded
+                Alert alert = new Alert(Alert.AlertType.WARNING);
+                alert.setTitle("Wikit Search");
+                alert.setHeaderText("Word Maximum Exceeded");
+                alert.setContentText("Please highlight a maximum of 20 words and try again.");
+                alert.showAndWait();
             }
-            else {
-                System.out.println(_textArea.getSelectedText());
+            else { // tts - need to make cleaner.
+                String cmd = "echo \"" + _textArea.getSelectedText() + "\" | festival --tts";
+                ProcessBuilder previewAudiopb1 = new ProcessBuilder("bash", "-c", cmd);
+                Process process1 = previewAudiopb1.start();
             }
         }
-
     }
             
 }
