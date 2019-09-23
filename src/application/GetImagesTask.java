@@ -44,7 +44,7 @@ public class GetImagesTask extends Task<Void> {
     }
 
     private void downloadImages(List<String> urls) {
-        int counter = 1;
+        int counter = 0;
         for (String s: urls) {
             try(InputStream in = new URL(s).openStream()){
                 Files.copy(in, Paths.get(Main.getCreationDir() + "/"+_creationName+"/image"+counter+".jpg"));
