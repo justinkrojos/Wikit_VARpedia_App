@@ -34,7 +34,7 @@ public class WikitSearchTask extends Task<Void> {
         //System.out.println(_output);
         //splitWikitOut = wikitOutput.split("\n");
 
-
+        stdout.close();
         return null;
 
     }
