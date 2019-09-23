@@ -74,18 +74,30 @@ public class CreateController {
                     ProcessBuilder overwritePB = new ProcessBuilder("bash", "-c", cmdOverwrite);
                     Process overwriteP = overwritePB.start();
                     overwriteP.waitFor();
+                    createNewDir(creationFile);
                     _creationNameField.setDisable(true);
                     btnCheckCreationName.setText("Success!");
                     btnCheckCreationName.setDisable(true);
                 }
                 return;
             }
+            createNewDir(creationFile);
             _creationNameField.setDisable(true);
             btnCheckCreationName.setText("Success!");
             btnCheckCreationName.setDisable(true);
 
 
 
+        } catch (IOException | InterruptedException e) {
+            e.printStackTrace();
+        }
+    }
+
+    private void createNewDir(String creationFile) {
+        ProcessBuilder overwritePB = new ProcessBuilder("bash", "-c", "mkdir -p " + creationFile);
+        try {
+            Process overwriteP = overwritePB.start();
+            overwriteP.waitFor();
         } catch (IOException | InterruptedException e) {
             e.printStackTrace();
         }
@@ -98,7 +110,8 @@ public class CreateController {
         task.setOnSucceeded(new EventHandler<WorkerStateEvent>() {
             @Override
             public void handle(WorkerStateEvent workerStateEvent) {
-                if (_termField.getText().isEmpty() | task.getExit() != 0) {
+                //TODO What happens when wikit search fails?? invalid wikie searches not handled.
+                if (_termField.getText().isEmpty() | task.getExit() != 0 | task.getOutput() == _termField.getText()+" not found :^(") {
                     Alert alert = new Alert(Alert.AlertType.WARNING);
                     alert.setTitle("Wikit Search");
                     alert.setHeaderText("Please enter a valid serach term");
@@ -117,14 +130,44 @@ public class CreateController {
 
     @FXML
     private void handleGetImages() {
+        if(btnSearch.isDisabled() == false || btnCheckCreationName.isDisabled() == false) {
+            Alert alert = new Alert(Alert.AlertType.INFORMATION);
+            alert.setTitle("Cannot get images");
+            alert.setHeaderText(null);
+            alert.setContentText("Cannot get images. Make sure a valid term or creation name is entered.");
+            alert.showAndWait();
+            return;
+        }
+
+        try {
+            int num = Integer.parseInt(_numImageField.getText());
+            if (num <=0 || num > 10) {
+                Alert alert = new Alert(Alert.AlertType.WARNING);
+                alert.setTitle("Invalid number of images");
+                alert.setHeaderText(null);
+                alert.setContentText("Please enter a number between 1 and 10, inclusive.");
+                alert.showAndWait();
+                return;
+            }
+        } catch (Exception e) {
+            Alert alert = new Alert(Alert.AlertType.WARNING);
+            alert.setTitle("Invalid number of images");
+            alert.setHeaderText(null);
+            alert.setContentText("Please enter a number between 1 and 10, inclusive.");
+            alert.showAndWait();
+            return;
+        }
+
         String term = _termField.getText();
         int numImages = Integer.parseInt(_numImageField.getText());
-
-        getImages(term,numImages);
+        String creationName = _creationNameField.getText();
+        getImages(term,creationName,numImages);
+        _numImageField.setDisable(true);
+        btnImage.setDisable(true);
     }
 
-    private void getImages(String term, int numImages) {
-        GetImagesTask task = new GetImagesTask(term, numImages);
+    private void getImages(String term, String creationName, int numImages) {
+        GetImagesTask task = new GetImagesTask(term, creationName, numImages);
         team.submit(task);
         task.setOnSucceeded(new EventHandler<WorkerStateEvent>() {
             @Override
