@@ -44,10 +44,10 @@ public class GetImagesTask extends Task<Void> {
     }
 
     private void downloadImages(List<String> urls) {
-        int counter = 1;
+        int counter = 0;
         for (String s: urls) {
             try(InputStream in = new URL(s).openStream()){
-                Files.copy(in, Paths.get(Main.getCreationDir() + "/"+_creationName+"/image"+counter));
+                Files.copy(in, Paths.get(Main.getCreationDir() + "/"+_creationName+"/image"+counter+".jpg"));
                 counter++;
             } catch (IOException e) {
                 e.printStackTrace();
@@ -116,4 +116,6 @@ public class GetImagesTask extends Task<Void> {
 
         return null;
     }
+    //ffmpeg -r 1/5 -f image2 -s 800x600 -i /media/sf_VBoxSharedFolder/Ass3/IdeaProjects/206Assignment3/out/production/creations/apple3/image%01d.jpg -vcodec libx264 -crf 25 -pix_fmt yuv420p -vf "drawtext=fontfile=myfont.ttf:fontsize=30:fontcolor=white:x=(w-text_w)/2:y=(h-text_h)/2:text='apple'" out.mp4
+
 }

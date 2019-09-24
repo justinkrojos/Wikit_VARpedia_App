@@ -70,9 +70,13 @@ public class HomeController {
     @FXML
     private Button btnBackward;
 
+    public void initialize(){
+        updateListTree();
+    }
+
     @FXML
     private void handleBtnPlay() {
-        System.out.println("Playing");
+        System.out.println("Playing");//TODO Play/pause stop not done yet
         if (_selectedItem == null) {
             alertNullSelection();
             return;
@@ -83,6 +87,8 @@ public class HomeController {
         MediaPlayer player = new MediaPlayer(video);
         player.setAutoPlay(true);
         MediaView mediaView = new MediaView(player);
+        mediaView.setFitWidth(800);
+        mediaView.setFitHeight(600);
         player.setOnReady(new Runnable() {
             @Override
             public void run() {
