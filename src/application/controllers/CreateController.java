@@ -62,7 +62,16 @@ public class CreateController {
     @FXML
     private ListView<HBox> _audioList;
 
-    private MenuButton voicesMenuButton; // dynamically added.
+    private MenuButton voicesMenuButton; // dynamically added
+
+    @FXML
+    private Button btnPreviewAudio;
+
+    @FXML
+    private Button btnSaveAudio;
+
+    @FXML
+    private Button btnDeleteAudio;
 
     @FXML
     public void handleCreationName() {
