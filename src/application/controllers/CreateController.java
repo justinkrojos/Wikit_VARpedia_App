@@ -8,10 +8,15 @@ import javafx.event.ActionEvent;
 import javafx.event.Event;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
+import javafx.geometry.Pos;
 import javafx.scene.control.*;
 import javafx.scene.input.MouseEvent;
+import javafx.scene.layout.HBox;
+import javafx.scene.layout.Priority;
+import javafx.scene.layout.Region;
 import javafx.stage.Stage;
 
+import javax.swing.*;
 import java.io.IOException;
 import java.util.Optional;
 import java.util.concurrent.ExecutorService;
@@ -56,6 +61,9 @@ public class CreateController {
 
     @FXML
     private TextField _audioName;
+
+    @FXML
+    private ListView<HBox> _audioList;
 
     @FXML
     public void handleCreationName() {
@@ -273,9 +281,51 @@ public class CreateController {
                     // String cmd = "mkdir -p " + Main.getCreationDir() + "/" + _creationNameField.getText() +"/audio && echo \"" + _textArea.getSelectedText() + "\" | text2wave -o " + Main.getCreationDir() + "/" + _creationNameField.getText() + "/audio/'" + _audioName.getText() + "'.wav";
                     ProcessBuilder saveAudiopb = new ProcessBuilder("bash", "-c", cmd);
                     Process process1 = saveAudiopb.start();
+
+
+
+
+                    Label label1 = new Label(_audioName.getText());
+                    MenuButton menuButton1 = new MenuButton("Voice1");
+
+                    MenuItem voice;
+                    for (int i = 1; i < 4; i++) {
+
+                        voice = new MenuItem("Voice_" + i);
+                        voice.setText("Voice" + i);
+                        menuButton1.getItems().add(voice);
+
+                        MenuItem finalVoice = voice;
+                        voice.setOnAction(new EventHandler<ActionEvent>() {
+                            @Override
+                            public void handle(ActionEvent actionEvent) {
+                                menuButton1.setText(finalVoice.getText());
+                            }
+                        });
+
+                    }
+
+                    Region region1 = new Region();
+
+                    HBox hb = new HBox(label1, region1, menuButton1);
+                    hb.setHgrow(region1, Priority.ALWAYS);
+
+
+
+                    _audioList.getItems().addAll(hb);
+
+                    // _audioList.getItems().add(_audioName.getText() + " [" + button.getText() + "]");
+
+
+
+
                     _audioName.clear();
                     // Add success?
                     _audioName.setPromptText("Name Selected Audio");
+
+
+
+
                 }
                 else { // no creation name/directory given..
                     Alert alert = new Alert(Alert.AlertType.WARNING);
@@ -292,5 +342,7 @@ public class CreateController {
         // Male or Female voices (for now)
         // When Create btn clicked: pop-up window that shows all mp3 files, with male/female button included that previews audio
     }
+
+
 
 }
