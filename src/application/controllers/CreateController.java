@@ -62,6 +62,8 @@ public class CreateController {
     @FXML
     private ListView<HBox> _audioList;
 
+    private MenuButton voicesMenuButton; // dynamically added.
+
     @FXML
     public void handleCreationName() {
         if(!_creationNameField.getText().matches("[a-zA-Z0-9_-]*") || _creationNameField.getText().isEmpty()) {
@@ -260,6 +262,13 @@ public class CreateController {
             alert.setContentText("Please enter a name for the audio file and try again.");
             alert.showAndWait();
         }
+        else if (!btnCheckCreationName.isDisabled()) {
+            Alert alert = new Alert(Alert.AlertType.WARNING);
+            alert.setTitle("Wikit Search");
+            alert.setHeaderText("Creation is unnamed");
+            alert.setContentText("Please name your creation and try again.");
+            alert.showAndWait();
+        }
         else {
             String[] words = _textArea.getSelectedText().split("\\s+");
             if (words.length > 20) { // alerts if maxmimum word length exceeded
@@ -270,31 +279,27 @@ public class CreateController {
                 alert.showAndWait();
             }
             else { // Create file
-                if (btnCheckCreationName.isDisabled()) { // create audio file in creation directory
                     // AUDIO NAME error handling? i.e. AUDIO NAME already exists?
 
                     String cmd = "mkdir -p " + Main.getCreationDir() + "/" + _creationNameField.getText() +"/audio && echo \"" + _textArea.getSelectedText() + "\" | text2wave -o " + Main.getCreationDir() + "/" + _creationNameField.getText() + "/audio/'" + _audioName.getText() + "'.wav";
                     ProcessBuilder saveAudiopb = new ProcessBuilder("bash", "-c", cmd);
                     Process process1 = saveAudiopb.start();
 
-
-
-
-                    Label label1 = new Label(_audioName.getText());
-                    MenuButton menuButton1 = new MenuButton("Voice1");
+                    Label audioLabel = new Label(_audioName.getText());
+                    voicesMenuButton = new MenuButton("Voice1");
 
                     MenuItem voice;
-                    for (int i = 1; i < 4; i++) {
+                    for (int i = 1; i < 4; i++) { // should download more voices later
 
-                        voice = new MenuItem("Voice_" + i);
+                        voice = new MenuItem("Voice" + i);
                         voice.setText("Voice" + i);
-                        menuButton1.getItems().add(voice);
+                        voicesMenuButton.getItems().add(voice);
 
                         MenuItem finalVoice = voice;
                         voice.setOnAction(new EventHandler<ActionEvent>() {
                             @Override
                             public void handle(ActionEvent actionEvent) {
-                                menuButton1.setText(finalVoice.getText());
+                                voicesMenuButton.setText(finalVoice.getText());
                             }
                         });
 
@@ -302,34 +307,17 @@ public class CreateController {
 
                     Region region1 = new Region();
 
-                    HBox hb = new HBox(label1, region1, menuButton1);
+                    HBox hb = new HBox(audioLabel, region1, voicesMenuButton);
                     hb.setHgrow(region1, Priority.ALWAYS);
-
-
 
                     _audioList.getItems().addAll(hb);
 
                     // _audioList.getItems().add(_audioName.getText() + " [" + button.getText() + "]");
 
-
-
-
                     _audioName.clear();
                     // Add success?
                     _audioName.setPromptText("Name Selected Audio");
 
-
-
-
-                }
-                else { // no creation name/directory given..
-                    Alert alert = new Alert(Alert.AlertType.WARNING);
-                    alert.setTitle("Wikit Search");
-                    alert.setHeaderText("Creation is unnamed");
-                    alert.setContentText("Please name your creation and try again.");
-                    alert.showAndWait();
-
-                }
 
             }
         }
