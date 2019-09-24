@@ -290,20 +290,20 @@ public class CreateController {
                 alert.showAndWait();
             }
             else { // Create file
-                    // AUDIO NAME error handling? i.e. AUDIO NAME already exists?
+                // AUDIO NAME error handling? i.e. AUDIO NAME already exists?
 
 
                 // System.out.println(getVoicesObject(voicesChoiceBox.getSelectionModel().getSelectedItem()).getVoicePackage());
                 // System.out.println(Voices.Voice1.getVoicePackage());
 
-                String cmd = "mkdir -p " + Main.getCreationDir() + "/" + _creationNameField.getText() +"/audio && " +
+                String cmd = "mkdir -p " + Main.getCreationDir() + "/" + _creationNameField.getText() + "/audio && " +
                         "echo \"" + _textArea.getSelectedText() + "\" | text2wave -o " + Main.getCreationDir() + "/" + _creationNameField.getText() + "/audio/'" + _audioName.getText() + "'.wav -eval \"" +
                         getVoicesObject(voicesChoiceBox.getSelectionModel().getSelectedItem()).getVoicePackage() + "\"";
 
                 ProcessBuilder saveAudiopb = new ProcessBuilder("bash", "-c", cmd);
                 Process process1 = saveAudiopb.start();
 
-                Text audioLabel = new Text(_audioName.getText() );
+                Text audioLabel = new Text(_audioName.getText());
 
                 btnDeleteAudio = new Button("Delete");
                 Region region1 = new Region();
@@ -315,15 +315,52 @@ public class CreateController {
 
                 // _audioList.getItems().add(_audioName.getText() + " [" + button.getText() + "]");
 
-                _audioName.clear();
-                // Add success?
-                _audioName.setPromptText("Name Selected Audio");
+
 
                 btnPreviewAudio.setDisable(false);
                 btnSaveAudio.setDisable(false);
 
 
+                // DELETE BUTTON EVENT HANDLING
+
+                String cmd2 = "rm '" + Main.getCreationDir() + "/" + _creationNameField.getText() + "/audio/" + _audioName.getText() + "'.wav";
+
+                _audioName.clear();
+                // Add success?
+                _audioName.setPromptText("Name Selected Audio");
+
+                final String cmdToDelete = cmd2;
+                final HBox hbToDelete = hb;
+
+
+
+
+                btnDeleteAudio.setOnAction(new EventHandler<ActionEvent>() { // Confirmation message?
+                    @Override
+                    public void handle(ActionEvent actionEvent) {
+                        // System.out.println(hbToDelete);
+                        _audioList.getItems().remove(hbToDelete);
+
+                        if (_audioList.getItems().size() == 0) {
+                            btnPreviewAudio.setDisable(true);
+                            btnSaveAudio.setDisable(true);
+                        }
+                        // System.out.println(cmd2);
+
+                        ProcessBuilder deleteAudiopb = new ProcessBuilder("bash", "-c", cmdToDelete);
+                        try {
+                            Process deleteProcess = deleteAudiopb.start();
+                        } catch (IOException e) {
+                            e.printStackTrace();
+                        }
+
+                    }
+                }
+                );
             }
+
+
+
         }
         // Save btn should create mp3 file and store it into a directory
         // Male or Female voices (for now)
@@ -353,8 +390,8 @@ public class CreateController {
             // System.out.println(cmd);
 
             ProcessBuilder playFullAudiopb = new ProcessBuilder("bash", "-c", cmd);
-            Process process = playFullAudiopb.start();
-            process.waitFor();
+            Process playAudioProcess = playFullAudiopb.start();
+            playAudioProcess.waitFor();
 
             // System.out.println(audioListLabel.getText());
             // System.out.println(_audioList.getItems().get(i).getChildren().get(0));
