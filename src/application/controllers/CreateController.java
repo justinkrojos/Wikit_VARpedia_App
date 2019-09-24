@@ -2,7 +2,10 @@ package application.controllers;
 
 import application.GetImagesTask;
 import application.Main;
+import application.Voices;
 import application.WikitSearchTask;
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 import javafx.concurrent.WorkerStateEvent;
 import javafx.event.ActionEvent;
 import javafx.event.Event;
@@ -14,6 +17,7 @@ import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.Priority;
 import javafx.scene.layout.Region;
+import javafx.scene.text.Text;
 import javafx.stage.Stage;
 
 import javax.swing.*;
@@ -62,7 +66,8 @@ public class CreateController {
     @FXML
     private ListView<HBox> _audioList;
 
-    private MenuButton voicesMenuButton; // dynamically added
+    @FXML
+    private ChoiceBox<String> voicesChoiceBox;
 
     @FXML
     private Button btnPreviewAudio;
@@ -70,8 +75,7 @@ public class CreateController {
     @FXML
     private Button btnSaveAudio;
 
-    @FXML
-    private Button btnDeleteAudio;
+    private Button btnDeleteAudio; // dynamically added
 
     @FXML
     public void handleCreationName() {
@@ -247,8 +251,6 @@ public class CreateController {
     @FXML
     public void handleSaveAudioBtn(ActionEvent event) throws IOException {
 
-        Button button = (Button)event.getSource();
-
         //ERROR HANDLING
         if (!btnSearch.getText().equals("Success!")) {
             Alert alert = new Alert(Alert.AlertType.WARNING);
@@ -290,42 +292,35 @@ public class CreateController {
             else { // Create file
                     // AUDIO NAME error handling? i.e. AUDIO NAME already exists?
 
-                    String cmd = "mkdir -p " + Main.getCreationDir() + "/" + _creationNameField.getText() +"/audio && echo \"" + _textArea.getSelectedText() + "\" | text2wave -o " + Main.getCreationDir() + "/" + _creationNameField.getText() + "/audio/'" + _audioName.getText() + "'.wav";
-                    ProcessBuilder saveAudiopb = new ProcessBuilder("bash", "-c", cmd);
-                    Process process1 = saveAudiopb.start();
 
-                    Label audioLabel = new Label(_audioName.getText());
-                    voicesMenuButton = new MenuButton("Voice1");
+                // System.out.println(getVoicesObject(voicesChoiceBox.getSelectionModel().getSelectedItem()).getVoicePackage());
+                // System.out.println(Voices.Voice1.getVoicePackage());
 
-                    MenuItem voice;
-                    for (int i = 1; i < 4; i++) { // should download more voices later
+                String cmd = "mkdir -p " + Main.getCreationDir() + "/" + _creationNameField.getText() +"/audio && " +
+                        "echo \"" + _textArea.getSelectedText() + "\" | text2wave -o " + Main.getCreationDir() + "/" + _creationNameField.getText() + "/audio/'" + _audioName.getText() + "'.wav -eval \"" +
+                        getVoicesObject(voicesChoiceBox.getSelectionModel().getSelectedItem()).getVoicePackage() + "\"";
 
-                        voice = new MenuItem("Voice" + i);
-                        voice.setText("Voice" + i);
-                        voicesMenuButton.getItems().add(voice);
+                ProcessBuilder saveAudiopb = new ProcessBuilder("bash", "-c", cmd);
+                Process process1 = saveAudiopb.start();
 
-                        MenuItem finalVoice = voice;
-                        voice.setOnAction(new EventHandler<ActionEvent>() {
-                            @Override
-                            public void handle(ActionEvent actionEvent) {
-                                voicesMenuButton.setText(finalVoice.getText());
-                            }
-                        });
+                Text audioLabel = new Text(_audioName.getText() + " [" + voicesChoiceBox.getSelectionModel().getSelectedItem() + "]");
 
-                    }
+                btnDeleteAudio = new Button("Delete");
+                Region region1 = new Region();
 
-                    Region region1 = new Region();
+                HBox hb = new HBox(audioLabel, region1, btnDeleteAudio);
+                hb.setHgrow(region1, Priority.ALWAYS);
 
-                    HBox hb = new HBox(audioLabel, region1, voicesMenuButton);
-                    hb.setHgrow(region1, Priority.ALWAYS);
+                _audioList.getItems().addAll(hb);
 
-                    _audioList.getItems().addAll(hb);
+                // _audioList.getItems().add(_audioName.getText() + " [" + button.getText() + "]");
 
-                    // _audioList.getItems().add(_audioName.getText() + " [" + button.getText() + "]");
+                _audioName.clear();
+                // Add success?
+                _audioName.setPromptText("Name Selected Audio");
 
-                    _audioName.clear();
-                    // Add success?
-                    _audioName.setPromptText("Name Selected Audio");
+                btnPreviewAudio.setDisable(false);
+                btnSaveAudio.setDisable(false);
 
 
             }
@@ -336,5 +331,22 @@ public class CreateController {
     }
 
 
+    public Voices getVoicesObject(String voiceCode) {
+        if (voiceCode.equals("Voice1")) {
+            return Voices.Voice1;
+        }
+        else if (voiceCode.equals("Voice2")) {
+            return Voices.Voice2;
+        }
+        else {
+            return Voices.Voice3;
+        }
+    }
+
+
+    @FXML
+    public void handlePreviewBtn() {
+        ;
+    }
 
 }
