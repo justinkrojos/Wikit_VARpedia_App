@@ -310,6 +310,7 @@ public class CreateController {
 
                 HBox hb = new HBox(audioLabel, region1, btnDeleteAudio);
                 hb.setHgrow(region1, Priority.ALWAYS);
+                hb.setAlignment(Pos.CENTER_LEFT);
 
                 _audioList.getItems().addAll(hb);
 
