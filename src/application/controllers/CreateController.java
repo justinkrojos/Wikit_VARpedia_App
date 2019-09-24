@@ -51,10 +51,7 @@ public class CreateController {
     private Button btnPlay;
 
     @FXML
-    private Button btnMaleAudio;
-
-    @FXML
-    private Button btnFemaleAudio;
+    private Button btnSave;
 
     @FXML
     private Button btnCreate;
@@ -242,7 +239,7 @@ public class CreateController {
         Button button = (Button)event.getSource();
 
         //ERROR HANDLING
-        if (btnSearch.getText().equals("Success!")) {
+        if (!btnSearch.getText().equals("Success!")) {
             Alert alert = new Alert(Alert.AlertType.WARNING);
             alert.setTitle("Wikit Search");
             alert.setHeaderText("No words were highlighted");
@@ -276,17 +273,7 @@ public class CreateController {
                 if (btnCheckCreationName.isDisabled()) { // create audio file in creation directory
                     // AUDIO NAME error handling? i.e. AUDIO NAME already exists?
 
-                    String cmd = "";
-                    if (button.equals(btnMaleAudio)) { // Male audio chosen
-                        cmd = "mkdir -p " + Main.getCreationDir() + "/" + _creationNameField.getText() +"/audio && " +
-                                "echo \"" + _textArea.getSelectedText() + "\" | text2wave -o " + Main.getCreationDir() + "/" + _creationNameField.getText() + "/audio/'" + _audioName.getText() + "'.wav -eval \"(voice_akl_nz_jdt_diphone)\"";
-                    }
-                    else { // Must be female: only two buttons trigger this method.
-                        cmd = "mkdir -p " + Main.getCreationDir() + "/" + _creationNameField.getText() +"/audio && " +
-                                "echo \"" + _textArea.getSelectedText() + "\" | text2wave -o " + Main.getCreationDir() + "/" + _creationNameField.getText() + "/audio/'" + _audioName.getText() + "'.wav -eval \"(voice_akl_nz_cw_cg_cg)\"";
-                    }
-
-                    // String cmd = "mkdir -p " + Main.getCreationDir() + "/" + _creationNameField.getText() +"/audio && echo \"" + _textArea.getSelectedText() + "\" | text2wave -o " + Main.getCreationDir() + "/" + _creationNameField.getText() + "/audio/'" + _audioName.getText() + "'.wav";
+                    String cmd = "mkdir -p " + Main.getCreationDir() + "/" + _creationNameField.getText() +"/audio && echo \"" + _textArea.getSelectedText() + "\" | text2wave -o " + Main.getCreationDir() + "/" + _creationNameField.getText() + "/audio/'" + _audioName.getText() + "'.wav";
                     ProcessBuilder saveAudiopb = new ProcessBuilder("bash", "-c", cmd);
                     Process process1 = saveAudiopb.start();
 

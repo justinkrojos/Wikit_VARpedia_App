@@ -27,9 +27,7 @@
       <TextField fx:id="_numImageField" layoutX="12.0" layoutY="274.0" />
       <Button fx:id="btnCheckCreationName" layoutX="184.0" layoutY="90.0" mnemonicParsing="false" onAction="#handleCreationName" text="Check" />
       <TextField fx:id="_audioName" layoutX="11.0" layoutY="175.0" promptText="Name Selected Audio" />
-      <Text layoutX="14.0" layoutY="222.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Save As" wrappingWidth="76.7294921875" />
-      <Button fx:id="btnMaleAudio" layoutX="79.0" layoutY="204.0" mnemonicParsing="false" onAction="#handleSaveAudioBtn" text="Male" />
-      <Button fx:id="btnFemaleAudio" layoutX="136.0" layoutY="204.0" mnemonicParsing="false" onAction="#handleSaveAudioBtn" text="Female" />
+      <Button fx:id="btnSave" layoutX="179.0" layoutY="175.0" mnemonicParsing="false" onAction="#handleSaveAudioBtn" text="Save" />
       <ListView fx:id="_audioList" layoutX="970.0" layoutY="35.0" prefHeight="600.0" prefWidth="266.0" />
       <Text layoutX="1077.0" layoutY="26.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Audio List" />
    </children>
