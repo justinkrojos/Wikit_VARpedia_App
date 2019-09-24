@@ -303,7 +303,7 @@ public class CreateController {
                 ProcessBuilder saveAudiopb = new ProcessBuilder("bash", "-c", cmd);
                 Process process1 = saveAudiopb.start();
 
-                Text audioLabel = new Text(_audioName.getText() + " [" + voicesChoiceBox.getSelectionModel().getSelectedItem() + "]");
+                Text audioLabel = new Text(_audioName.getText() );
 
                 btnDeleteAudio = new Button("Delete");
                 Region region1 = new Region();
@@ -345,8 +345,21 @@ public class CreateController {
 
 
     @FXML
-    public void handlePreviewBtn() {
-        ;
+    public void handlePreviewBtn() throws IOException, InterruptedException {
+        for (int i = 0; i < _audioList.getItems().size(); i++) {
+            Text audioListLabel = (Text)_audioList.getItems().get(i).getChildren().get(0);
+
+            String cmd = "ffplay -autoexit '" + Main.getCreationDir() + "/" + _creationNameField.getText() + "/audio/" + audioListLabel.getText() + ".wav'";
+            // System.out.println(cmd);
+
+            ProcessBuilder playFullAudiopb = new ProcessBuilder("bash", "-c", cmd);
+            Process process = playFullAudiopb.start();
+            process.waitFor();
+
+            // System.out.println(audioListLabel.getText());
+            // System.out.println(_audioList.getItems().get(i).getChildren().get(0));
+            // System.out.println("REACHED");
+        }
     }
 
 }
