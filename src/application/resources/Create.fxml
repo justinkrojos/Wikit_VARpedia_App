@@ -30,6 +30,7 @@
       <Text layoutX="14.0" layoutY="222.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Save As" wrappingWidth="76.7294921875" />
       <Button fx:id="btnMaleAudio" layoutX="79.0" layoutY="204.0" mnemonicParsing="false" onAction="#handleSaveAudioBtn" text="Male" />
       <Button fx:id="btnFemaleAudio" layoutX="136.0" layoutY="204.0" mnemonicParsing="false" onAction="#handleSaveAudioBtn" text="Female" />
-      <ListView fx:id="_audioList" layoutX="841.0" layoutY="35.0" prefHeight="600.0" prefWidth="395.0" />
+      <ListView fx:id="_audioList" layoutX="970.0" layoutY="35.0" prefHeight="600.0" prefWidth="266.0" />
+      <Text layoutX="1077.0" layoutY="26.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Audio List" />
    </children>
 </AnchorPane>

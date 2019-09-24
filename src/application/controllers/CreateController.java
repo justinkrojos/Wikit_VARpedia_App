@@ -242,7 +242,7 @@ public class CreateController {
         Button button = (Button)event.getSource();
 
         //ERROR HANDLING
-        if (_termField.getText().isEmpty()) {
+        if (btnSearch.getText().equals("Success!")) {
             Alert alert = new Alert(Alert.AlertType.WARNING);
             alert.setTitle("Wikit Search");
             alert.setHeaderText("No words were highlighted");
