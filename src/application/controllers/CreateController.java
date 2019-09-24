@@ -59,6 +59,14 @@ public class CreateController {
 
     @FXML
     public void handleCreationName() {
+        if(!_creationNameField.getText().matches("[a-zA-Z0-9_-]*") || _creationNameField.getText().isEmpty()) {
+            Alert alert = new Alert(Alert.AlertType.WARNING);
+            alert.setTitle("Warning Dialog");
+            alert.setHeaderText("Invalid Creation name");
+            alert.setContentText("Please enter a valid non-empty creation name, allowed characters: a-z A-Z 0-9 _ -");
+            alert.showAndWait();
+            return;
+        }
         String creationDir = Main.getCreationDir();
         String creationFile = creationDir + "/" +_creationNameField.getText();
         String cmd = "[ -e " + creationFile + " ]";

@@ -70,6 +70,10 @@ public class HomeController {
     @FXML
     private Button btnBackward;
 
+    public void initialize(){
+        updateListTree();
+    }
+
     @FXML
     private void handleBtnPlay() {
         System.out.println("Playing");
