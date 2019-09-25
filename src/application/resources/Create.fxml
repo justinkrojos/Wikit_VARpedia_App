@@ -38,7 +38,7 @@
               </items>
       </ListView>
       <Text layoutX="12.0" layoutY="360.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Audio Queue" />
-      <Button fx:id="btnPreviewAudio" disable="true" layoutX="13.0" layoutY="595.0" mnemonicParsing="false" onAction="#handlePreviewBtn" prefHeight="26.0" prefWidth="224.0" text="Preview Audio" />
+      <Button fx:id="btnPreviewAudio" disable="true" layoutX="13.0" layoutY="595.0" mnemonicParsing="false" onAction="#handlePreviewBtn" prefHeight="26.0" prefWidth="158.0" text="Preview Audio" />
       <Text layoutX="13.0" layoutY="220.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Save as:" />
       <ChoiceBox fx:id="voicesChoiceBox" layoutX="73.0" layoutY="201.0" prefHeight="26.0" prefWidth="109.0" value="Voice1">
               <items>
@@ -49,5 +49,6 @@
                  </FXCollections>
               </items>
       </ChoiceBox>
+      <Button fx:id="btnStopAudio" layoutX="175.0" layoutY="595.0" disable="true" mnemonicParsing="false" prefHeight="26.0" prefWidth="61.0" text="Stop" />
    </children>
 </AnchorPane>

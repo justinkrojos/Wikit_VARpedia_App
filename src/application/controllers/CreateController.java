@@ -72,6 +72,9 @@ public class CreateController {
     @FXML
     private Button btnPreviewAudio;
 
+    @FXML
+    private Button btnStopAudio;
+
     private Button btnDeleteAudio; // dynamically added
 
     @FXML
@@ -409,9 +412,6 @@ public class CreateController {
             cmd = cmd + " '" + Main.getCreationDir() + "/" + _creationNameField.getText() + "/audio/" + audioListLabel.getText() + ".wav'";
             // System.out.println(cmd);
 
-
-
-
             // System.out.println(audioListLabel.getText());
             // System.out.println(_audioList.getItems().get(i).getChildren().get(0));
             // System.out.println("REACHED");
@@ -422,6 +422,18 @@ public class CreateController {
         // System.out.println(cmd);
         ProcessBuilder playFullAudiopb = new ProcessBuilder("bash", "-c", cmd);
         Process playAudioProcess = playFullAudiopb.start();
+
+        btnStopAudio.setDisable(false);
+
+        btnStopAudio.setOnAction(new EventHandler<ActionEvent>() {
+            @Override
+            public void handle(ActionEvent actionEvent) {
+                playAudioProcess.destroyForcibly();
+                btnStopAudio.setDisable(true);
+            }
+        });
     }
+
+    // FOR WAV FILE PATHNAME: Main.getCreationDir() + "/" + _creationNameField.getText() + "/" + _creationNameField.getText() + ".wav"
 
 }
