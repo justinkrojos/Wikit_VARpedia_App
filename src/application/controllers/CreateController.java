@@ -1,9 +1,6 @@
 package application.controllers;
 
-import application.GetImagesTask;
-import application.Main;
-import application.Voices;
-import application.WikitSearchTask;
+import application.*;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.concurrent.WorkerStateEvent;
@@ -404,6 +401,20 @@ public class CreateController {
     @FXML
     public void handlePreviewBtn() throws IOException, InterruptedException {
 
+        btnPreviewAudio.setDisable(true);
+        btnStopAudio.setDisable(false);
+
+        AudioMergeTask audioMergeTask = new AudioMergeTask(_creationNameField.getText(), _audioList);
+        team.submit(audioMergeTask);
+
+        audioMergeTask.setOnSucceeded(new EventHandler<WorkerStateEvent>() {
+            @Override
+            public void handle(WorkerStateEvent workerStateEvent) {
+                btnPreviewAudio.setDisable(false);
+                btnStopAudio.setDisable(true);
+            }
+        });
+/*
         String cmd = "sox";
 
         for (int i = 0; i < _audioList.getItems().size(); i++) {
@@ -411,10 +422,6 @@ public class CreateController {
 
             cmd = cmd + " '" + Main.getCreationDir() + "/" + _creationNameField.getText() + "/audio/" + audioListLabel.getText() + ".wav'";
             // System.out.println(cmd);
-
-            // System.out.println(audioListLabel.getText());
-            // System.out.println(_audioList.getItems().get(i).getChildren().get(0));
-            // System.out.println("REACHED");
         }
         cmd = cmd + " '" + Main.getCreationDir() + "/" + _creationNameField.getText() + "/" + _creationNameField.getText() + ".wav'" +
                 " && ffplay -autoexit -nodisp '" + Main.getCreationDir() + "/" + _creationNameField.getText() + "/" + _creationNameField.getText() + ".wav'";
@@ -422,16 +429,19 @@ public class CreateController {
         // System.out.println(cmd);
         ProcessBuilder playFullAudiopb = new ProcessBuilder("bash", "-c", cmd);
         Process playAudioProcess = playFullAudiopb.start();
+*/
 
-        btnStopAudio.setDisable(false);
 
         btnStopAudio.setOnAction(new EventHandler<ActionEvent>() {
             @Override
             public void handle(ActionEvent actionEvent) {
-                playAudioProcess.destroyForcibly();
+                audioMergeTask.getProcess().destroyForcibly();
+                btnPreviewAudio.setDisable(false);
                 btnStopAudio.setDisable(true);
+                
             }
         });
+
     }
 
     // FOR WAV FILE PATHNAME: Main.getCreationDir() + "/" + _creationNameField.getText() + "/" + _creationNameField.getText() + ".wav"
