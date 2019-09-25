@@ -298,6 +298,7 @@ public class CreateController {
                 String cmd = "mkdir -p " + Main.getCreationDir() + "/" + _creationNameField.getText() + "/audio && " +
                         "echo \"" + _textArea.getSelectedText() + "\" | text2wave -o " + Main.getCreationDir() + "/" + _creationNameField.getText() + "/audio/'" + _audioName.getText() + "'.wav -eval \"" +
                         getVoicesObject(voicesChoiceBox.getSelectionModel().getSelectedItem()).getVoicePackage() + "\"";
+                // System.out.println(cmd);
 
                 ProcessBuilder saveAudiopb = new ProcessBuilder("bash", "-c", cmd);
                 Process process1 = saveAudiopb.start();
@@ -400,20 +401,27 @@ public class CreateController {
     @FXML
     public void handlePreviewBtn() throws IOException, InterruptedException {
 
+        String cmd = "sox";
+
         for (int i = 0; i < _audioList.getItems().size(); i++) {
             Text audioListLabel = (Text)_audioList.getItems().get(i).getChildren().get(0);
 
-            String cmd = "ffplay -autoexit -nodisp '" + Main.getCreationDir() + "/" + _creationNameField.getText() + "/audio/" + audioListLabel.getText() + ".wav'";
+            cmd = cmd + " '" + Main.getCreationDir() + "/" + _creationNameField.getText() + "/audio/" + audioListLabel.getText() + ".wav'";
             // System.out.println(cmd);
 
-            ProcessBuilder playFullAudiopb = new ProcessBuilder("bash", "-c", cmd);
-            Process playAudioProcess = playFullAudiopb.start();
-            playAudioProcess.waitFor();
+
+
 
             // System.out.println(audioListLabel.getText());
             // System.out.println(_audioList.getItems().get(i).getChildren().get(0));
             // System.out.println("REACHED");
         }
+        cmd = cmd + " '" + Main.getCreationDir() + "/" + _creationNameField.getText() + "/" + _creationNameField.getText() + ".wav'" +
+                " && ffplay -autoexit -nodisp '" + Main.getCreationDir() + "/" + _creationNameField.getText() + "/" + _creationNameField.getText() + ".wav'";
+
+        // System.out.println(cmd);
+        ProcessBuilder playFullAudiopb = new ProcessBuilder("bash", "-c", cmd);
+        Process playAudioProcess = playFullAudiopb.start();
     }
 
 }
