@@ -144,6 +144,7 @@ public class CreateController {
     public void handleSearch() {
         WikitSearchTask task = new WikitSearchTask(_termField.getText());
         team.submit(task);
+        btnSearch.setDisable(true);
         task.setOnSucceeded(new EventHandler<WorkerStateEvent>() {
             @Override
             public void handle(WorkerStateEvent workerStateEvent) {
@@ -154,6 +155,7 @@ public class CreateController {
                     alert.setHeaderText("Please enter a valid serach term");
                     alert.setContentText("Enter a valid search term and try again.");
                     alert.showAndWait();
+                    btnSearch.setDisable(false);
                     return;
                 }
 
