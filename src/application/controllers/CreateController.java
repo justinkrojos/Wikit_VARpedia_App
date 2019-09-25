@@ -72,9 +72,6 @@ public class CreateController {
     @FXML
     private Button btnPreviewAudio;
 
-    @FXML
-    private Button btnSaveAudio;
-
     private Button btnDeleteAudio; // dynamically added
 
     @FXML
@@ -324,7 +321,6 @@ public class CreateController {
 
 
                 btnPreviewAudio.setDisable(false);
-                btnSaveAudio.setDisable(false);
 
 
                 // DELETE BUTTON EVENT HANDLING
@@ -364,7 +360,6 @@ public class CreateController {
 
                         if (_audioList.getItems().size() == 0) {
                             btnPreviewAudio.setDisable(true);
-                            btnSaveAudio.setDisable(true);
                         }
                         // System.out.println(cmd2);
 
@@ -404,6 +399,7 @@ public class CreateController {
 
     @FXML
     public void handlePreviewBtn() throws IOException, InterruptedException {
+
         for (int i = 0; i < _audioList.getItems().size(); i++) {
             Text audioListLabel = (Text)_audioList.getItems().get(i).getChildren().get(0);
 
