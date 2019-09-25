@@ -32,10 +32,15 @@
       <Button fx:id="btnCheckCreationName" layoutX="184.0" layoutY="90.0" mnemonicParsing="false" onAction="#handleCreationName" text="Check" />
       <TextField fx:id="_audioName" layoutX="11.0" layoutY="175.0" promptText="Name Selected Audio" />
       <Button fx:id="btnSave" layoutX="182.0" layoutY="175.0" mnemonicParsing="false" onAction="#handleSaveAudioBtn" prefHeight="53.0" prefWidth="61.0" text="Save" />
-      <ListView fx:id="_audioList" layoutX="13.0" layoutY="369.0" prefHeight="225.0" prefWidth="224.0" />
-      <Text layoutX="12.0" layoutY="360.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Audio List" />
+      <ListView fx:id="_audioList" layoutX="13.0" layoutY="369.0" prefHeight="225.0" prefWidth="224.0" >
+              <items>
+                 <FXCollections fx:factory="observableArrayList">
+                 </FXCollections>
+              </items>
+      </ListView>
+      <Text layoutX="12.0" layoutY="360.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Audio Queue" />
       <Button fx:id="btnPreviewAudio" disable="true" layoutX="13.0" layoutY="595.0" mnemonicParsing="false" onAction="#handlePreviewBtn" text="Preview" />
-      <Button fx:id="btnSaveAudio" disable="true" layoutX="187.0" layoutY="595.0" mnemonicParsing="false" text="Save" />
+      <Button fx:id="btnSaveAudio" disable="true" layoutX="187.0" layoutY="595.0" mnemonicParsing="false" onAction="#handleSaveAudioBtn" text="Save" />
       <Text layoutX="13.0" layoutY="220.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Save as:" />
       <ChoiceBox fx:id="voicesChoiceBox" layoutX="73.0" layoutY="201.0" prefHeight="26.0" prefWidth="109.0" value="Voice1">
               <items>
