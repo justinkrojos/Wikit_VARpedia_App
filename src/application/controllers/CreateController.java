@@ -306,6 +306,8 @@ public class CreateController {
                 Text audioLabel = new Text(_audioName.getText());
 
                 btnDeleteAudio = new Button("Delete");
+                btnDeleteAudio.setVisible(false);
+
                 Region region1 = new Region();
 
                 HBox hb = new HBox(audioLabel, region1, btnDeleteAudio);
@@ -315,6 +317,7 @@ public class CreateController {
                 _audioList.getItems().addAll(hb);
 
                 // _audioList.getItems().add(_audioName.getText() + " [" + button.getText() + "]");
+
 
 
 
@@ -332,9 +335,24 @@ public class CreateController {
 
                 final String cmdToDelete = cmd2;
                 final HBox hbToDelete = hb;
+                final Button btnToEnable = btnDeleteAudio;
 
+                // DEL BTN visible when listitem clicked
+                _audioList.setOnMouseClicked(new EventHandler<MouseEvent>() {
+                    @Override
+                    public void handle(MouseEvent mouseEvent) {
 
+                        for (int i = 0; i < _audioList.getItems().size(); i++) {
 
+                            HBox hb = _audioList.getItems().get(i);
+                            Button button = (Button)hb.getChildren().get(2);
+                            button.setVisible(false);
+                            if (_audioList.getSelectionModel().getSelectedItem().equals(hb)) {
+                                button.setVisible(true);
+                            }
+                        }
+                    }
+                });
 
                 btnDeleteAudio.setOnAction(new EventHandler<ActionEvent>() { // Confirmation message?
                     @Override
@@ -387,7 +405,7 @@ public class CreateController {
         for (int i = 0; i < _audioList.getItems().size(); i++) {
             Text audioListLabel = (Text)_audioList.getItems().get(i).getChildren().get(0);
 
-            String cmd = "ffplay -autoexit '" + Main.getCreationDir() + "/" + _creationNameField.getText() + "/audio/" + audioListLabel.getText() + ".wav'";
+            String cmd = "ffplay -autoexit -nodisp '" + Main.getCreationDir() + "/" + _creationNameField.getText() + "/audio/" + audioListLabel.getText() + ".wav'";
             // System.out.println(cmd);
 
             ProcessBuilder playFullAudiopb = new ProcessBuilder("bash", "-c", cmd);
