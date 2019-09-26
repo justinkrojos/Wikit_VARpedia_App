@@ -41,6 +41,7 @@ public class GetImagesTask extends Task<Void> {
         //downloadImages(_imageList);
        // makeVideo();
         flickr();
+        makeVideo();
         return null;
     }
 
@@ -128,6 +129,7 @@ public class GetImagesTask extends Task<Void> {
 
 
         String command = "ffmpeg -r 1/"+length+" -f image2 -s 800x600 -i "+Main.getCreationDir()+"/"+_creationName+"/image%01d.jpg -vcodec libx264 -crf 25 -pix_fmt yuv420p -vf \"drawtext=fontfile=myfont.ttf:fontsize=30:fontcolor=white:x=(w-text_w)/2:y=(h-text_h)/2:text='"+_term+"'\" "+Main.getCreationDir()+"/"+_creationName+"/"+_creationName+".mp4";
+        System.out.println(command);
         ProcessBuilder pb = new ProcessBuilder("bash", "-c",command);
         Process p = null;
         try {
@@ -161,7 +163,7 @@ public class GetImagesTask extends Task<Void> {
             String sharedSecret = "42ccf0520e0515f1";
             Flickr flickr = new Flickr(apiKey, sharedSecret, new REST());
             String query = _term;
-            int resultsPerPage = _numImages;
+            int resultsPerPage = _numImages+2;
             int page = 0;
 
             PhotosInterface photos = flickr.getPhotosInterface();
