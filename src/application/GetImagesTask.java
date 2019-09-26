@@ -36,6 +36,7 @@ public class GetImagesTask extends Task<Void> {
         List<String> imageList = getImages(_term,_numImages);
         _imageList = imageList;
         downloadImages(_imageList);
+        makeVideo();
         return null;
     }
 
@@ -117,5 +118,36 @@ public class GetImagesTask extends Task<Void> {
         return null;
     }
     //ffmpeg -r 1/5 -f image2 -s 800x600 -i /media/sf_VBoxSharedFolder/Ass3/IdeaProjects/206Assignment3/out/production/creations/apple3/image%01d.jpg -vcodec libx264 -crf 25 -pix_fmt yuv420p -vf "drawtext=fontfile=myfont.ttf:fontsize=30:fontcolor=white:x=(w-text_w)/2:y=(h-text_h)/2:text='apple'" out.mp4
+    private void makeVideo() {
+        int length = getAudioLength();
+        length = (length / _numImages) + 1;
 
+
+        String command = "ffmpeg -r 1/"+length+" -f image2 -s 800x600 -i "+Main.getCreationDir()+"/"+_creationName+"/image%01d.jpg -vcodec libx264 -crf 25 -pix_fmt yuv420p -vf \"drawtext=fontfile=myfont.ttf:fontsize=30:fontcolor=white:x=(w-text_w)/2:y=(h-text_h)/2:text='"+_term+"'\" "+Main.getCreationDir()+"/"+_creationName+"/"+_creationName+".mp4";
+        ProcessBuilder pb = new ProcessBuilder("bash", "-c",command);
+        Process p = null;
+        try {
+            p = pb.start();
+            p.waitFor();
+        } catch (IOException | InterruptedException e) {
+            e.printStackTrace();
+        }
+       // System.out.println(command);
+
+    }
+
+    private int getAudioLength() {
+        String command = "soxi -D "+Main.getCreationDir()+"/"+_creationName+"/"+_creationName+".wav";
+        ProcessBuilder audioLenBuilder = new ProcessBuilder("bash","-c",command);
+        try {
+            Process audioLenProcess = audioLenBuilder.start();
+            BufferedReader stdout = new BufferedReader(new InputStreamReader(audioLenProcess.getInputStream()));
+            audioLenProcess.waitFor();
+            String audioString = stdout.readLine();
+            return (int)Double.parseDouble(audioString) + 1;
+        } catch (InterruptedException | IOException e) {
+            e.printStackTrace();
+        }
+        return -1;
+    }
 }
