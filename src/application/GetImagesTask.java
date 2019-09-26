@@ -1,12 +1,15 @@
 package application;
 
+import com.flickr4java.flickr.Flickr;
+import com.flickr4java.flickr.FlickrException;
+import com.flickr4java.flickr.REST;
+import com.flickr4java.flickr.photos.*;
 import javafx.concurrent.Task;
 import javafx.scene.image.Image;
 
-import java.io.BufferedReader;
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.InputStreamReader;
+import javax.imageio.ImageIO;
+import java.awt.image.BufferedImage;
+import java.io.*;
 import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.URL;
@@ -33,10 +36,11 @@ public class GetImagesTask extends Task<Void> {
 
     @Override
     protected Void call() throws Exception {
-        List<String> imageList = getImages(_term,_numImages);
-        _imageList = imageList;
-        downloadImages(_imageList);
-        makeVideo();
+        //List<String> imageList = getImages(_term,_numImages);
+        //_imageList = imageList;
+        //downloadImages(_imageList);
+       // makeVideo();
+        flickr();
         return null;
     }
 
@@ -132,7 +136,7 @@ public class GetImagesTask extends Task<Void> {
         } catch (IOException | InterruptedException e) {
             e.printStackTrace();
         }
-       // System.out.println(command);
+        // System.out.println(command);
 
     }
 
@@ -149,5 +153,41 @@ public class GetImagesTask extends Task<Void> {
             e.printStackTrace();
         }
         return -1;
+    }
+
+    private void flickr() {
+        try{
+            String apiKey = "e37d6b63e1b4bceb47a42a3a37f316e3";
+            String sharedSecret = "42ccf0520e0515f1";
+            Flickr flickr = new Flickr(apiKey, sharedSecret, new REST());
+            String query = _term;
+            int resultsPerPage = _numImages;
+            int page = 0;
+
+            PhotosInterface photos = flickr.getPhotosInterface();
+            SearchParameters params = new SearchParameters();
+            params.setSort(SearchParameters.RELEVANCE);
+            params.setMedia("photos");
+            params.setText(query);
+
+            PhotoList<Photo> results = photos.search(params, resultsPerPage, page);
+           // System.out.println("Retrieving " + results.size()+ " results");
+
+            for (Photo photo: results) {
+                try {
+                    BufferedImage image = photos.getImage(photo, Size.LARGE);
+                    String filename = query.trim().replace(' ', '-')+"-"+System.currentTimeMillis()+"-"+photo.getId()+".jpg";
+                    File outputfile = new File(Main.getCreationDir()+"/"+_creationName,filename);
+                    ImageIO.write(image, "jpg", outputfile);
+                    //System.out.println("Downloaded "+filename);
+                } catch (FlickrException | IOException fe) {
+                   // System.err.println("Ignoring image " +photo.getId() +": "+ fe.getMessage());
+                }
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+       // System.out.println("\nDone");
     }
 }
