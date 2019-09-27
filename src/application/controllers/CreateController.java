@@ -75,7 +75,7 @@ public class CreateController {
     private Button btnDeleteAudio; // dynamically added
 
     @FXML
-    private Button saveAudioFile;
+    private Button btnSaveAudioFile;
 
     @FXML
     public void handleCreationName() {
@@ -325,6 +325,7 @@ public class CreateController {
 
 
                 btnPreviewAudio.setDisable(false);
+                btnSaveAudioFile.setDisable(false);
 
 
                 // DELETE BUTTON EVENT HANDLING
@@ -364,6 +365,7 @@ public class CreateController {
 
                         if (_audioList.getItems().size() == 0) {
                             btnPreviewAudio.setDisable(true);
+                            btnSaveAudioFile.setDisable(true);
                         }
                         // System.out.println(cmd2);
 
@@ -407,7 +409,7 @@ public class CreateController {
         btnPreviewAudio.setDisable(true);
         btnStopAudio.setDisable(false);
 
-        AudioMergeTask audioMergeTask = new AudioMergeTask(_creationNameField.getText(), _audioList);
+        AudioMergeTask audioMergeTask = new AudioMergeTask(_creationNameField.getText(), _audioList, btnPreviewAudio.isDisabled());
         team.submit(audioMergeTask);
 
         audioMergeTask.setOnSucceeded(new EventHandler<WorkerStateEvent>() {
@@ -444,6 +446,14 @@ public class CreateController {
                 
             }
         });
+
+    }
+
+    @FXML
+    public void handleSaveFinalAudioBtn() {
+        AudioMergeTask audioMergeTask = new AudioMergeTask(_creationNameField.getText(), _audioList, btnPreviewAudio.isDisabled());
+        team.submit(audioMergeTask);
+        btnSaveAudioFile.setText("Save and Overwrite");
 
     }
 

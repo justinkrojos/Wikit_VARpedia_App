@@ -50,6 +50,6 @@
               </items>
       </ChoiceBox>
       <Button fx:id="btnStopAudio" disable="true" layoutX="175.0" layoutY="595.0" mnemonicParsing="false" prefHeight="26.0" prefWidth="61.0" text="Stop" />
-      <Button fx:id="saveAudioFile" disable="true" layoutX="16.0" layoutY="621.0" mnemonicParsing="false" prefHeight="26.0" prefWidth="218.0" text="Save Audio Queue " />
+      <Button fx:id="btnSaveAudioFile" disable="true" layoutX="16.0" layoutY="621.0" mnemonicParsing="false" prefHeight="26.0" prefWidth="218.0" onAction="#handleSaveFinalAudioBtn" text="Save Audio Queue " />
    </children>
 </AnchorPane>
