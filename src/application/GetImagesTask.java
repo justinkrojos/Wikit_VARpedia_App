@@ -128,17 +128,18 @@ public class GetImagesTask extends Task<Void> {
    //ffmpeg -framerate 0.3 -i apple%02d.jpg -r 25  out.mp4
     //ffmpeg -framerate 0.3 -i apple%02d.jpg -vf "drawtext=fontfile=myfont.ttf:fontsize=30:fontcolor=white:x=(w-text_w)/2:y=(h-text_h)/2:text='apple'" out.mp4
     private void makeVideo() {
-        int length = getAudioLength();
-        length = ((length) / _numImages);
+        double length = getAudioLength();
+        length = _numImages/length;
+
         //System.out.println(length);
 
        //String command = "ffmpeg -r 1/"+length+" -f image2 -s 800x600 -i "+Main.getCreationDir()+"/"+_creationName+"/image%01d.jpg -vcodec libx264 -crf 25 -pix_fmt yuv420p -vf \"drawtext=fontfile=myfont.ttf:fontsize=30:fontcolor=white:x=(w-text_w)/2:y=(h-text_h)/2:text='"+_term+"'\" "+Main.getCreationDir()+"/"+_creationName+"/"+_creationName+".mp4";
         //String command = "ffmpeg -framerate "+length+" -i image%01d.jpg -r 25 -vf \"drawtext=fontfile=myfont.ttf:fontsize=30:fontcolor=white:x=(w-text_w)/2:y=(h-text_h)/2:text='"+_term+"'\" "+Main.getCreationDir()+"/"+_creationName+"/"+_creationName+".mp4";
-        String command1 = "ffmpeg -y -framerate 1/"+length+" -i image%01d.jpg -r 25 -vf \"pad=ceil(iw/2)*2:ceil(ih/2)*2\" "+Main.getCreationDir()+"/"+_creationName+"/"+"video.mp4";
+        String command1 = "ffmpeg -y -framerate "+length+" -i "+Main.getCreationDir()+"/"+_creationName+"/"+"image%01d.jpg -r 25 -vf \"pad=ceil(iw/2)*2:ceil(ih/2)*2\" "+Main.getCreationDir()+"/"+_creationName+"/"+"video.mp4";
         String command2 = "ffmpeg -y -i "+Main.getCreationDir()+"/"+_creationName+"/"+"video.mp4 "+ "-vf \"drawtext=fontfile=myfont.ttf:fontsize=30:fontcolor=white:x=(w-text_w)/2:y=(h-text_h)/2:text='"+_term+"'\" "+Main.getCreationDir()+"/"+_creationName+"/"+_creationName+".mp4";
         String command = command1+";"+command2;
 
-        System.out.println(command);
+        //System.out.println(command);
         ProcessBuilder pbb = new ProcessBuilder("/bin/bash","-c",command);
         try {
             Process p = pbb.start();
