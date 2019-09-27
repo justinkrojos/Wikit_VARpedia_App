@@ -78,6 +78,9 @@ public class CreateController {
      * Check if creation name is taken, and if so let the user pick if they want to overwrite
      */
     @FXML
+    private Button btnSaveAudioFile;
+
+    @FXML
     public void handleCreationName() {
         if(!_creationNameField.getText().matches("[a-zA-Z0-9_-]*") || _creationNameField.getText().isEmpty()) {
             Alert alert = new Alert(Alert.AlertType.WARNING);
@@ -333,6 +336,7 @@ public class CreateController {
 
 
                 btnPreviewAudio.setDisable(false);
+                btnSaveAudioFile.setDisable(false);
 
 
                 // DELETE BUTTON EVENT HANDLING
@@ -372,6 +376,7 @@ public class CreateController {
 
                         if (_audioList.getItems().size() == 0) {
                             btnPreviewAudio.setDisable(true);
+                            btnSaveAudioFile.setDisable(true);
                         }
                         // System.out.println(cmd2);
 
@@ -415,7 +420,7 @@ public class CreateController {
         btnPreviewAudio.setDisable(true);
         btnStopAudio.setDisable(false);
 
-        AudioMergeTask audioMergeTask = new AudioMergeTask(_creationNameField.getText(), _audioList);
+        AudioMergeTask audioMergeTask = new AudioMergeTask(_creationNameField.getText(), _audioList, btnPreviewAudio.isDisabled());
         team.submit(audioMergeTask);
 
         audioMergeTask.setOnSucceeded(new EventHandler<WorkerStateEvent>() {
@@ -452,6 +457,14 @@ public class CreateController {
                 
             }
         });
+
+    }
+
+    @FXML
+    public void handleSaveFinalAudioBtn() {
+        AudioMergeTask audioMergeTask = new AudioMergeTask(_creationNameField.getText(), _audioList, btnPreviewAudio.isDisabled());
+        team.submit(audioMergeTask);
+        btnSaveAudioFile.setText("Save and Overwrite");
 
     }
 
