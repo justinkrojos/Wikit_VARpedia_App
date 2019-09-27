@@ -213,6 +213,19 @@ public class CreateController {
         btnImage.setDisable(true);
     }
 
+    @FXML
+    private void mergeVideoAudio(){
+        String creationName = _creationNameField.getText();
+        MergeTask task = new MergeTask(creationName);
+        team.submit(task);
+        task.setOnSucceeded(new EventHandler<WorkerStateEvent>() {
+            @Override
+            public void handle(WorkerStateEvent workerStateEvent) {
+                btnCreate.setText("Success!");
+            }
+        });
+    }
+
     private void getImages(String term, String creationName, int numImages) {
         GetImagesTask task = new GetImagesTask(term, creationName, numImages);
         team.submit(task);
