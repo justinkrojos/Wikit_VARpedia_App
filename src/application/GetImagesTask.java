@@ -136,7 +136,7 @@ public class GetImagesTask extends Task<Void> {
         //String command = "ffmpeg -framerate "+length+" -i image%01d.jpg -r 25 -vf \"drawtext=fontfile=myfont.ttf:fontsize=30:fontcolor=white:x=(w-text_w)/2:y=(h-text_h)/2:text='"+_term+"'\" "+Main.getCreationDir()+"/"+_creationName+"/"+_creationName+".mp4";
         String command1 = "ffmpeg -y -framerate 1/"+length+" -i image%01d.jpg -r 25 -vf \"pad=ceil(iw/2)*2:ceil(ih/2)*2\" "+Main.getCreationDir()+"/"+_creationName+"/"+"video.mp4";
         String command2 = "ffmpeg -y -i "+Main.getCreationDir()+"/"+_creationName+"/"+"video.mp4 "+ "-vf \"drawtext=fontfile=myfont.ttf:fontsize=30:fontcolor=white:x=(w-text_w)/2:y=(h-text_h)/2:text='"+_term+"'\" "+Main.getCreationDir()+"/"+_creationName+"/"+_creationName+".mp4";
-        String command = command1+";"+command2+";"+"echo Testing > "+Main.getCreationDir()+"/"+_creationName+"/"+"video.txt";
+        String command = command1+";"+command2;
 
         System.out.println(command);
         ProcessBuilder pbb = new ProcessBuilder("/bin/bash","-c",command);
