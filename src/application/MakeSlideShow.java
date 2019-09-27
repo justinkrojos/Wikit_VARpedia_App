@@ -3,8 +3,11 @@ package application;
 import javafx.concurrent.Task;
 
 public class MakeSlideShow extends Task<Void> {
+    String _term;
 
-    public MakeSlideShow() {
+
+    public MakeSlideShow(String term) {
+        _term = term;
 
     }
     @Override
