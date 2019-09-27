@@ -13,6 +13,7 @@ public class AudioMergeTask extends Task<Void> {
     private String term;
     private ListView _audioList;
     private Process playAudioProcess;
+    private String cmd;
 
     public AudioMergeTask(String term, ListView _audioList) {
         this.term = term;
@@ -21,7 +22,28 @@ public class AudioMergeTask extends Task<Void> {
 
     @Override
     protected Void call() throws Exception {
-        String cmd = "sox";
+        mergeAudio();
+
+        cmd = cmd + " '" + Main.getCreationDir() + "/" + term + "/" + term+ ".wav'" +
+                " && ffplay -autoexit -nodisp '" + Main.getCreationDir() + "/" + term + "/" + term + ".wav'";
+
+        doProcess(cmd);
+       // System.out.println(cmd);
+
+        // System.out.println(cmd);
+
+
+
+        return null;
+
+    }
+
+    public Process getProcess() {
+        return playAudioProcess;
+    }
+
+    public void mergeAudio() {
+        cmd = "sox";
 
         for (int i = 0; i < _audioList.getItems().size(); i++) {
             HBox audioListhb = (HBox)_audioList.getItems().get(i);
@@ -30,22 +52,13 @@ public class AudioMergeTask extends Task<Void> {
             cmd = cmd + " '" + Main.getCreationDir() + "/" + term + "/audio/" + audioListLabel.getText() + ".wav'";
             // System.out.println(cmd);
         }
-        cmd = cmd + " '" + Main.getCreationDir() + "/" + term + "/" + term+ ".wav'" +
-                " && ffplay -autoexit -nodisp '" + Main.getCreationDir() + "/" + term + "/" + term + ".wav'";
+    }
 
-       // System.out.println(cmd);
-
-        // System.out.println(cmd);
+    public void doProcess(String cmd) throws Exception {
         ProcessBuilder playFullAudiopb = new ProcessBuilder("bash", "-c", cmd);
         playAudioProcess = playFullAudiopb.start();
         playAudioProcess.waitFor();
 
-        return null;
-
-    }
-
-    public Process getProcess() {
-        return playAudioProcess;
     }
 
 }
