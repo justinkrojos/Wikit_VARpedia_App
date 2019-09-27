@@ -24,9 +24,9 @@ public class GetImagesTask extends Task<Void> {
     private int _numImages;
     private String _creationName;
 
-    private List<String> _imageList;
+    //private List<String> _imageList;
 
-    private int _exit;
+  //  private int _exit;
 
     public GetImagesTask(String term, String creationName, int numImages) {
         _term = term;
@@ -36,18 +36,12 @@ public class GetImagesTask extends Task<Void> {
 
     @Override
     protected Void call() throws Exception {
-        //List<String> imageList = getImages(_term,_numImages);
-        //_imageList = imageList;
-        //downloadImages(_imageList);
-       // makeVideo();
         flickr();
         makeVideo();
-/*        Thread thread = new Thread(new MakeSlideShow());
-        thread.start();*/
         return null;
     }
 
-    public List<String> getImagesURL() {
+ /*   public List<String> getImagesURL() {
         return _imageList;
     }
 
@@ -62,9 +56,9 @@ public class GetImagesTask extends Task<Void> {
             }
 
         }
-    }
+    }*/
 
-    private List<String> getImages(String term, int numImages) {
+  /*  private List<String> getImages(String term, int numImages) {
         String urlString = "https://www.flickr.com/search/?text=" + _term;
         String html = "";
         try {
@@ -109,9 +103,9 @@ public class GetImagesTask extends Task<Void> {
 
         return imageList;
 
-    }
+    }*/
 
-    private String finalURL(String url) {
+/*    private String finalURL(String url) {
         HttpURLConnection con;
         try {
             con = (HttpURLConnection) new URL(url).openConnection();
@@ -123,7 +117,7 @@ public class GetImagesTask extends Task<Void> {
         }
 
         return null;
-    }
+    }*/
     //ffmpeg -r 1/5 -f image2 -s 800x600 -i /media/sf_VBoxSharedFolder/Ass3/IdeaProjects/206Assignment3/out/production/creations/apple3/image%01d.jpg -vcodec libx264 -crf 25 -pix_fmt yuv420p -vf "drawtext=fontfile=myfont.ttf:fontsize=30:fontcolor=white:x=(w-text_w)/2:y=(h-text_h)/2:text='apple'" out.mp4
    //ffmpeg -framerate 0.3 -i apple%02d.jpg -r 25  out.mp4
     //ffmpeg -framerate 0.3 -i apple%02d.jpg -vf "drawtext=fontfile=myfont.ttf:fontsize=30:fontcolor=white:x=(w-text_w)/2:y=(h-text_h)/2:text='apple'" out.mp4

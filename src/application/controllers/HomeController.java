@@ -74,8 +74,13 @@ public class HomeController {
         updateListTree();
     }
 
+    /**
+     * Play a video creation.
+     */
     @FXML
     private void handleBtnPlay() {
+        _player.getChildren().removeAll();
+
         System.out.println("Playing");//TODO Play/pause stop not done yet
         if (_selectedItem == null) {
             alertNullSelection();
@@ -97,9 +102,13 @@ public class HomeController {
             }
         });
 
+
         _player.getChildren().add(mediaView);
     }
 
+    /**
+     * Delete a creation.
+     */
     @FXML
     private void handleBtnDel() {
         //System.out.println("Deleting");
@@ -129,6 +138,10 @@ public class HomeController {
         }
     }
 
+    /**
+     * Opens up the create menu.
+     * @throws IOException
+     */
     @FXML
     private void handleBtnCreate() throws IOException {
         //System.out.println("Creating");
@@ -141,6 +154,9 @@ public class HomeController {
         creationStage.show();
     }
 
+    /**
+     * Refresh the creation list.
+     */
     @FXML
     public void handleBtnRefresh() {
         //System.out.println("Refresh");
@@ -178,6 +194,9 @@ public class HomeController {
 
     }
 
+    /**
+     * A alert for when no collection is selected.
+     */
     private void alertNullSelection() {
         Alert alert = new Alert(Alert.AlertType.WARNING);
         alert.setTitle("Please Select A Creation");

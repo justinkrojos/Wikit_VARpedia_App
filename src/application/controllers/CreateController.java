@@ -74,6 +74,9 @@ public class CreateController {
 
     private Button btnDeleteAudio; // dynamically added
 
+    /**
+     * Check if creation name is taken, and if so let the user pick if they want to overwrite
+     */
     @FXML
     public void handleCreationName() {
         if(!_creationNameField.getText().matches("[a-zA-Z0-9_-]*") || _creationNameField.getText().isEmpty()) {
@@ -127,6 +130,10 @@ public class CreateController {
         }
     }
 
+    /**
+     * Create new direction with name of creation.
+     * @param creationFile
+     */
     private void createNewDir(String creationFile) {
         ProcessBuilder overwritePB = new ProcessBuilder("bash", "-c", "mkdir -p " + creationFile);
         try {
@@ -137,6 +144,9 @@ public class CreateController {
         }
     }
 
+    /**
+     * Handle the wikit search term.
+     */
     @FXML
     public void handleSearch() {
         WikitSearchTask task = new WikitSearchTask(_termField.getText());
@@ -146,7 +156,7 @@ public class CreateController {
             @Override
             public void handle(WorkerStateEvent workerStateEvent) {
                 //TODO What happens when wikit search fails?? invalid wikie searches not handled.
-                if (_termField.getText().isEmpty() | task.getExit() != 0 | task.getOutput() == _termField.getText()+" not found :^(") {
+                if (_termField.getText().isEmpty() | task.getExit() != 0 | task.getOutput().equals( _termField.getText()+" not found :^(")) {
                     Alert alert = new Alert(Alert.AlertType.WARNING);
                     alert.setTitle("Wikit Search");
                     alert.setHeaderText("Please enter a valid serach term");
@@ -166,6 +176,7 @@ public class CreateController {
 
     @FXML
     private void handleGetImages() {
+        //TODO CHECK audio save button is pressed.
         if(btnSearch.isDisabled() == false || btnCheckCreationName.isDisabled() == false) {
             Alert alert = new Alert(Alert.AlertType.INFORMATION);
             alert.setTitle("Cannot get images");
