@@ -42,6 +42,8 @@ public class GetImagesTask extends Task<Void> {
        // makeVideo();
         flickr();
         makeVideo();
+/*        Thread thread = new Thread(new MakeSlideShow());
+        thread.start();*/
         return null;
     }
 
@@ -128,15 +130,34 @@ public class GetImagesTask extends Task<Void> {
     private void makeVideo() {
         int length = getAudioLength();
         length = ((length) / _numImages);
+        //System.out.println(length);
 
        // String command = "ffmpeg -r 1/"+length+" -f image2 -s 800x600 -i "+Main.getCreationDir()+"/"+_creationName+"/image%01d.jpg -vcodec libx264 -crf 25 -pix_fmt yuv420p -vf \"drawtext=fontfile=myfont.ttf:fontsize=30:fontcolor=white:x=(w-text_w)/2:y=(h-text_h)/2:text='"+_term+"'\" "+Main.getCreationDir()+"/"+_creationName+"/"+_creationName+".mp4";
-        String command = "ffmpeg -framerate "+length+" -i image%01d.jpg -r 25 -vf \"drawtext=fontfile=myfont.ttf:fontsize=30:fontcolor=white:x=(w-text_w)/2:y=(h-text_h)/2:text='"+_term+"'\" "+Main.getCreationDir()+"/"+_creationName+"/"+_creationName+".mp4";
+       // String command = "ffmpeg -framerate "+length+" -i image%01d.jpg -r 25 -vf \"drawtext=fontfile=myfont.ttf:fontsize=30:fontcolor=white:x=(w-text_w)/2:y=(h-text_h)/2:text='"+_term+"'\" "+Main.getCreationDir()+"/"+_creationName+"/"+_creationName+".mp4";
+        String command1 = "ffmpeg -y -framerate 1/"+length+" -i image%01d.jpg -r 25 -vf \"pad=ceil(iw/2)*2:ceil(ih/2)*2\" "+Main.getCreationDir()+"/"+_creationName+"/"+"video.mp4";
+        String command2 = "ffmpeg -y -i "+Main.getCreationDir()+"/"+_creationName+"/"+"video.mp4 "+ "-vf \"drawtext=fontfile=myfont.ttf:fontsize=30:fontcolor=white:x=(w-text_w)/2:y=(h-text_h)/2:text='"+_term+"'\" "+Main.getCreationDir()+"/"+_creationName+"/"+_creationName+".mp4";
+        String command = command1+";"+command2;
         System.out.println(command);
-        ProcessBuilder pb = new ProcessBuilder("bash", "-c",command);
-/*        Process p = null;
+        ProcessBuilder pbb = new ProcessBuilder("/bin/bash","-c",command);
         try {
-            p = pb.start();
+            Process p = pbb.start();
             p.waitFor();
+          //  pb.redirectOutput(Paths.get(Main.getCreationDir()+"/"+_creationName+"/"+_creationName+".mp4"));
+            System.out.println("Done");
+        } catch (IOException | InterruptedException e) {
+            e.printStackTrace();
+        }
+
+/*       // Process p = null;
+        try {
+            ProcessBuilder pb = new ProcessBuilder("bash", "-c",command1);
+            Process p = pb.start();
+            p.waitFor();
+
+            ProcessBuilder pb2 = new ProcessBuilder("bash", "-c",command2);
+            Process p2 = pb.start();
+            p2.waitFor();
+            System.out.println("Done");
         } catch (IOException | InterruptedException e) {
             e.printStackTrace();
         }*/
@@ -152,6 +173,7 @@ public class GetImagesTask extends Task<Void> {
             BufferedReader stdout = new BufferedReader(new InputStreamReader(audioLenProcess.getInputStream()));
             audioLenProcess.waitFor();
             String audioString = stdout.readLine();
+            stdout.close();
             return (int)Double.parseDouble(audioString) + 1;
         } catch (InterruptedException | IOException e) {
             e.printStackTrace();
@@ -163,6 +185,8 @@ public class GetImagesTask extends Task<Void> {
         try{
             String apiKey = "e37d6b63e1b4bceb47a42a3a37f316e3";
             String sharedSecret = "42ccf0520e0515f1";
+            /*String apiKey = getAPIKey("apiKey");
+            String sharedSecret = getAPIKey("sharedSecret");*/
             Flickr flickr = new Flickr(apiKey, sharedSecret, new REST());
             String query = _term;
             int resultsPerPage = _numImages;
@@ -176,14 +200,16 @@ public class GetImagesTask extends Task<Void> {
 
             PhotoList<Photo> results = photos.search(params, resultsPerPage, page);
            // System.out.println("Retrieving " + results.size()+ " results");
-
+            int count = 0;
             for (Photo photo: results) {
                 try {
                     BufferedImage image = photos.getImage(photo, Size.LARGE);
-                    String filename = query.trim().replace(' ', '-')+"-"+System.currentTimeMillis()+"-"+photo.getId()+".jpg";
+                    //String filename = query.trim().replace(' ', '-')+"-"+System.currentTimeMillis()+"-"+photo.getId()+".jpg";
+                    String filename = "image"+count+".jpg";
                     File outputfile = new File(Main.getCreationDir()+"/"+_creationName,filename);
                     ImageIO.write(image, "jpg", outputfile);
                     //System.out.println("Downloaded "+filename);
+                    count++;
                 } catch (FlickrException | IOException fe) {
                    // System.err.println("Ignoring image " +photo.getId() +": "+ fe.getMessage());
                 }
