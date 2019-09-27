@@ -127,19 +127,19 @@ public class GetImagesTask extends Task<Void> {
     //ffmpeg -framerate 0.3 -i apple%02d.jpg -vf "drawtext=fontfile=myfont.ttf:fontsize=30:fontcolor=white:x=(w-text_w)/2:y=(h-text_h)/2:text='apple'" out.mp4
     private void makeVideo() {
         int length = getAudioLength();
-        length = (length / _numImages) + 1;
+        length = ((length) / _numImages);
 
-
-        String command = "ffmpeg -r 1/"+length+" -f image2 -s 800x600 -i "+Main.getCreationDir()+"/"+_creationName+"/image%01d.jpg -vcodec libx264 -crf 25 -pix_fmt yuv420p -vf \"drawtext=fontfile=myfont.ttf:fontsize=30:fontcolor=white:x=(w-text_w)/2:y=(h-text_h)/2:text='"+_term+"'\" "+Main.getCreationDir()+"/"+_creationName+"/"+_creationName+".mp4";
+       // String command = "ffmpeg -r 1/"+length+" -f image2 -s 800x600 -i "+Main.getCreationDir()+"/"+_creationName+"/image%01d.jpg -vcodec libx264 -crf 25 -pix_fmt yuv420p -vf \"drawtext=fontfile=myfont.ttf:fontsize=30:fontcolor=white:x=(w-text_w)/2:y=(h-text_h)/2:text='"+_term+"'\" "+Main.getCreationDir()+"/"+_creationName+"/"+_creationName+".mp4";
+        String command = "ffmpeg -framerate "+length+" -i image%01d.jpg -r 25 -vf \"drawtext=fontfile=myfont.ttf:fontsize=30:fontcolor=white:x=(w-text_w)/2:y=(h-text_h)/2:text='"+_term+"'\" "+Main.getCreationDir()+"/"+_creationName+"/"+_creationName+".mp4";
         System.out.println(command);
         ProcessBuilder pb = new ProcessBuilder("bash", "-c",command);
-        Process p = null;
+/*        Process p = null;
         try {
             p = pb.start();
             p.waitFor();
         } catch (IOException | InterruptedException e) {
             e.printStackTrace();
-        }
+        }*/
         // System.out.println(command);
 
     }
@@ -165,7 +165,7 @@ public class GetImagesTask extends Task<Void> {
             String sharedSecret = "42ccf0520e0515f1";
             Flickr flickr = new Flickr(apiKey, sharedSecret, new REST());
             String query = _term;
-            int resultsPerPage = _numImages+2;
+            int resultsPerPage = _numImages;
             int page = 0;
 
             PhotosInterface photos = flickr.getPhotosInterface();
@@ -193,5 +193,27 @@ public class GetImagesTask extends Task<Void> {
         }
 
        // System.out.println("\nDone");
+    }
+    public static String getAPIKey(String key) throws Exception {
+        // TODO fix the following based on where you will have your config file stored
+
+        String config = System.getProperty("user.dir")
+                + System.getProperty("file.separator")+ "flickr-api-keys.txt";
+
+//		String config = System.getProperty("user.home")
+//				+ System.getProperty("file.separator")+ "bin"
+//				+ System.getProperty("file.separator")+ "flickr-api-keys.txt";
+        File file = new File(config);
+        BufferedReader br = new BufferedReader(new FileReader(file));
+
+        String line;
+        while ( (line = br.readLine()) != null ) {
+            if (line.trim().startsWith(key)) {
+                br.close();
+                return line.substring(line.indexOf("=")+1).trim();
+            }
+        }
+        br.close();
+        throw new RuntimeException("Couldn't find " + key +" in config file "+file.getName());
     }
 }
