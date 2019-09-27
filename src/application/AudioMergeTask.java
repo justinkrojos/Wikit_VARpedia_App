@@ -36,6 +36,7 @@ public class AudioMergeTask extends Task<Void> {
 
         if (preview) {
             cmd = cmd + " '" + Main.getCreationDir() + "/" + term + "/" + term + "preview.wav' && ffplay -autoexit -nodisp '" + Main.getCreationDir() + "/" + term + "/" + term + "preview.wav'";
+            // System.out.println(cmd);
         }
         else {
             cmd = cmd + " '" + Main.getCreationDir() + "/" + term + "/" + term + ".wav'";
