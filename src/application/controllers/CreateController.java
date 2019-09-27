@@ -440,7 +440,7 @@ public class CreateController {
         btnStopAudio.setOnAction(new EventHandler<ActionEvent>() {
             @Override
             public void handle(ActionEvent actionEvent) {
-                audioMergeTask.getProcess().destroyForcibly();
+                audioMergeTask.stopProcess();
                 btnPreviewAudio.setDisable(false);
                 btnStopAudio.setDisable(true);
                 
