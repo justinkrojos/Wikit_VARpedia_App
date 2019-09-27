@@ -19,6 +19,7 @@ import javafx.stage.Stage;
 
 import javax.swing.*;
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.Optional;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
@@ -79,6 +80,8 @@ public class CreateController {
      */
     @FXML
     private Button btnSaveAudioFile;
+
+    ArrayList<String> existingAudio = new ArrayList<String>();
 
     @FXML
     public void handleCreationName() {
@@ -318,93 +321,104 @@ public class CreateController {
             else { // Create file
                 // AUDIO NAME error handling? i.e. AUDIO NAME already exists?
 
+                if (existingAudio.contains(_audioName.getText())) {
+                    Alert alert = new Alert(Alert.AlertType.WARNING);
+                    alert.setTitle("Wikit Search");
+                    alert.setHeaderText("Audio name taken");
+                    alert.setContentText("Please rename your audio and try again.");
+                    alert.showAndWait();
+                }
+                else {
 
-                // System.out.println(getVoicesObject(voicesChoiceBox.getSelectionModel().getSelectedItem()).getVoicePackage());
-                // System.out.println(Voices.Voice1.getVoicePackage());
+                    existingAudio.add(_audioName.getText());
 
-                String cmd = "mkdir -p " + Main.getCreationDir() + "/" + _creationNameField.getText() + "/audio && " +
-                        "echo \"" + _textArea.getSelectedText() + "\" | text2wave -o " + Main.getCreationDir() + "/" + _creationNameField.getText() + "/audio/'" + _audioName.getText() + "'.wav -eval \"" +
-                        getVoicesObject(voicesChoiceBox.getSelectionModel().getSelectedItem()).getVoicePackage() + "\"";
-                // System.out.println(cmd);
+                    // System.out.println(getVoicesObject(voicesChoiceBox.getSelectionModel().getSelectedItem()).getVoicePackage());
+                    // System.out.println(Voices.Voice1.getVoicePackage());
 
-                ProcessBuilder saveAudiopb = new ProcessBuilder("bash", "-c", cmd);
-                Process process1 = saveAudiopb.start();
+                    String cmd = "mkdir -p " + Main.getCreationDir() + "/" + _creationNameField.getText() + "/audio && " +
+                            "echo \"" + _textArea.getSelectedText() + "\" | text2wave -o " + Main.getCreationDir() + "/" + _creationNameField.getText() + "/audio/'" + _audioName.getText() + "'.wav -eval \"" +
+                            getVoicesObject(voicesChoiceBox.getSelectionModel().getSelectedItem()).getVoicePackage() + "\"";
+                    // System.out.println(cmd);
 
-                Text audioLabel = new Text(_audioName.getText());
+                    ProcessBuilder saveAudiopb = new ProcessBuilder("bash", "-c", cmd);
+                    Process process1 = saveAudiopb.start();
 
-                btnDeleteAudio = new Button("Delete");
-                btnDeleteAudio.setVisible(false);
+                    Text audioLabel = new Text(_audioName.getText());
 
-                Region region1 = new Region();
+                    btnDeleteAudio = new Button("Delete");
+                    btnDeleteAudio.setVisible(false);
 
-                HBox hb = new HBox(audioLabel, region1, btnDeleteAudio);
-                hb.setHgrow(region1, Priority.ALWAYS);
-                hb.setAlignment(Pos.CENTER_LEFT);
+                    Region region1 = new Region();
 
-                _audioList.getItems().addAll(hb);
+                    HBox hb = new HBox(audioLabel, region1, btnDeleteAudio);
+                    hb.setHgrow(region1, Priority.ALWAYS);
+                    hb.setAlignment(Pos.CENTER_LEFT);
 
-                // _audioList.getItems().add(_audioName.getText() + " [" + button.getText() + "]");
+                    _audioList.getItems().addAll(hb);
 
-
-
-
-                btnPreviewAudio.setDisable(false);
-                btnSaveAudioFile.setDisable(false);
+                    // _audioList.getItems().add(_audioName.getText() + " [" + button.getText() + "]");
 
 
-                // DELETE BUTTON EVENT HANDLING
 
-                String cmd2 = "rm '" + Main.getCreationDir() + "/" + _creationNameField.getText() + "/audio/" + _audioName.getText() + "'.wav";
 
+                    btnPreviewAudio.setDisable(false);
+                    btnSaveAudioFile.setDisable(false);
+
+
+                    // DELETE BUTTON EVENT HANDLING
+
+                    String cmd2 = "rm '" + Main.getCreationDir() + "/" + _creationNameField.getText() + "/audio/" + _audioName.getText() + "'.wav";
+
+                    final String cmdToDelete = cmd2;
+                    final HBox hbToDelete = hb;
+                    final Button btnToEnable = btnDeleteAudio;
+
+                    // DEL BTN visible when listitem clicked
+                    _audioList.setOnMouseClicked(new EventHandler<MouseEvent>() {
+                        @Override
+                        public void handle(MouseEvent mouseEvent) {
+
+                            for (int i = 0; i < _audioList.getItems().size(); i++) {
+
+                                HBox hb = _audioList.getItems().get(i);
+                                Button button = (Button)hb.getChildren().get(2);
+                                button.setVisible(false);
+                                if (_audioList.getSelectionModel().getSelectedItem().equals(hb)) {
+                                    button.setVisible(true);
+                                }
+                            }
+                        }
+                    });
+
+                    btnDeleteAudio.setOnAction(new EventHandler<ActionEvent>() { // Confirmation message?
+                        @Override
+                        public void handle(ActionEvent actionEvent) {
+                            // System.out.println(hbToDelete);
+                            Text textToDelete = (Text)hbToDelete.getChildren().get(0);
+                            existingAudio.remove(textToDelete.getText());
+                            _audioList.getItems().remove(hbToDelete);
+                            if (_audioList.getItems().size() == 0) {
+                                btnPreviewAudio.setDisable(true);
+                                btnSaveAudioFile.setDisable(true);
+                            }
+                            // System.out.println(cmd2);
+
+                            ProcessBuilder deleteAudiopb = new ProcessBuilder("bash", "-c", cmdToDelete);
+                            try {
+                                Process deleteProcess = deleteAudiopb.start();
+                            } catch (IOException e) {
+                                e.printStackTrace();
+                            }
+
+                        }
+                    }
+                    );
+
+                }
                 _audioName.clear();
                 // Add success?
                 _audioName.setPromptText("Name Selected Audio");
-
-                final String cmdToDelete = cmd2;
-                final HBox hbToDelete = hb;
-                final Button btnToEnable = btnDeleteAudio;
-
-                // DEL BTN visible when listitem clicked
-                _audioList.setOnMouseClicked(new EventHandler<MouseEvent>() {
-                    @Override
-                    public void handle(MouseEvent mouseEvent) {
-
-                        for (int i = 0; i < _audioList.getItems().size(); i++) {
-
-                            HBox hb = _audioList.getItems().get(i);
-                            Button button = (Button)hb.getChildren().get(2);
-                            button.setVisible(false);
-                            if (_audioList.getSelectionModel().getSelectedItem().equals(hb)) {
-                                button.setVisible(true);
-                            }
-                        }
-                    }
-                });
-
-                btnDeleteAudio.setOnAction(new EventHandler<ActionEvent>() { // Confirmation message?
-                    @Override
-                    public void handle(ActionEvent actionEvent) {
-                        // System.out.println(hbToDelete);
-                        _audioList.getItems().remove(hbToDelete);
-
-                        if (_audioList.getItems().size() == 0) {
-                            btnPreviewAudio.setDisable(true);
-                            btnSaveAudioFile.setDisable(true);
-                        }
-                        // System.out.println(cmd2);
-
-                        ProcessBuilder deleteAudiopb = new ProcessBuilder("bash", "-c", cmdToDelete);
-                        try {
-                            Process deleteProcess = deleteAudiopb.start();
-                        } catch (IOException e) {
-                            e.printStackTrace();
-                        }
-
-                    }
-                }
-                );
             }
-
 
 
         }
@@ -467,7 +481,7 @@ public class CreateController {
                 audioMergeTask.stopProcess();
                 btnPreviewAudio.setDisable(false);
                 btnStopAudio.setDisable(true);
-                
+
             }
         });
 
