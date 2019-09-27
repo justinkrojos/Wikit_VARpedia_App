@@ -75,6 +75,9 @@ public class CreateController {
     private Button btnDeleteAudio; // dynamically added
 
     @FXML
+    private Button saveAudioFile;
+
+    @FXML
     public void handleCreationName() {
         if(!_creationNameField.getText().matches("[a-zA-Z0-9_-]*") || _creationNameField.getText().isEmpty()) {
             Alert alert = new Alert(Alert.AlertType.WARNING);
