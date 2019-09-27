@@ -360,8 +360,10 @@ public class CreateController {
 
 
 
+                    if ((btnStopAudio.isDisabled() && !btnPreviewAudio.isDisabled()) || (btnStopAudio.isDisabled() && btnPreviewAudio.isDisabled())) {
+                        btnPreviewAudio.setDisable(false);
+                    }
 
-                    btnPreviewAudio.setDisable(false);
                     btnSaveAudioFile.setDisable(false);
 
 
