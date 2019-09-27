@@ -35,7 +35,7 @@ public class AudioMergeTask extends Task<Void> {
         }
 
         if (preview) {
-            cmd = cmd + " '" + Main.getCreationDir() + "/" + term + "/" + term + "preview.wav' && ffplay -autoexit -nodisp '" + Main.getCreationDir() + "/" + term + "/" + term + "preview.wav' && rm '" + Main.getCreationDir() + "/" + term + "/" + term + "preview.wav' && ffplay -autoexit -nodisp '" + Main.getCreationDir() + "/" + term + "/" + term + "preview.wav'";
+            cmd = cmd + " '" + Main.getCreationDir() + "/" + term + "/" + term + "preview.wav' && ffplay -autoexit -nodisp '" + Main.getCreationDir() + "/" + term + "/" + term + "preview.wav'";
         }
         else {
             cmd = cmd + " '" + Main.getCreationDir() + "/" + term + "/" + term + ".wav'";
@@ -56,8 +56,8 @@ public class AudioMergeTask extends Task<Void> {
 
     }
 
-    public Process getProcess() {
-        return playAudioProcess;
+    public void stopProcess() {
+        playAudioProcess.destroyForcibly();
     }
 
 
