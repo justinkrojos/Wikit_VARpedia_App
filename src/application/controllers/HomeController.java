@@ -154,6 +154,7 @@ public class HomeController {
         FXMLLoader loader = new FXMLLoader();
         loader.setLocation(Main.class.getResource("resources/Create.fxml"));
         Parent layout = loader.load();
+
         Scene scene = new Scene(layout);
         Stage creationStage = new Stage();
         creationStage.setScene(scene);

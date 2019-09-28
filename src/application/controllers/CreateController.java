@@ -11,6 +11,7 @@ import javafx.fxml.FXML;
 import javafx.geometry.Pos;
 import javafx.scene.control.*;
 import javafx.scene.input.MouseEvent;
+import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.Priority;
 import javafx.scene.layout.Region;
@@ -28,6 +29,9 @@ import java.util.concurrent.Executors;
 public class CreateController {
 
     private ExecutorService team = Executors.newSingleThreadExecutor();
+
+    @FXML
+    private AnchorPane _ap;
 
     @FXML
     private TextField _numImageField;
@@ -78,6 +82,8 @@ public class CreateController {
 
     private Button btnDeleteAudio; // dynamically added
 
+    private Stage _currentStage;
+
     /**
      * Check if creation name is taken, and if so let the user pick if they want to overwrite
      */
@@ -86,11 +92,15 @@ public class CreateController {
 
     ArrayList<String> existingAudio = new ArrayList<String>();
 
+    public void setUp(Stage stage){
+        _currentStage = stage;
+    }
+
     public void initialize(){
         btnCreate.setVisible(false);
         btnCreate.setDisable(true);
 
-
+       // _currentStage = (Stage) _ap.getScene().getWindow();
     }
 
     @FXML
