@@ -21,9 +21,9 @@
       <TextField fx:id="_creationNameField" layoutX="12.0" layoutY="90.0" />
       <Text layoutX="22.0" layoutY="692.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Create Creation" />
       <Button fx:id="btnCreate" layoutX="1204.0" layoutY="693.0" mnemonicParsing="false" onAction="#mergeVideoAudio" text="CREATE" />
-      <Text layoutX="13.0" layoutY="162.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Play Selected Text" />
-      <Button fx:id="btnPlay" layoutX="146.0" layoutY="145.0" mnemonicParsing="false" onAction="#handleAudioPreview" text="Play" />
-      <Text layoutX="15.0" layoutY="140.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Highlight text to select it." />
+      <Text layoutX="13.0" layoutY="162.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Preview as:" />
+      <Button fx:id="btnPlay" layoutX="198.0" layoutY="144.0" mnemonicParsing="false" onAction="#handleAudioPreview" text="Play" />
+      <Text layoutX="12.0" layoutY="140.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Highlight text to select it." />
       <Text layoutX="13.0" layoutY="193.0" strokeType="OUTSIDE" strokeWidth="0.0" />
       <Text layoutX="24.0" layoutY="606.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Enter number of images" />
       <Button fx:id="btnImage" layoutX="133.0" layoutY="674.0" mnemonicParsing="false" onAction="#handleGetImages" text="Create" />
@@ -51,5 +51,14 @@
       </ChoiceBox>
       <Button fx:id="btnStopAudio" disable="true" layoutX="175.0" layoutY="490.0" mnemonicParsing="false" prefHeight="26.0" prefWidth="61.0" text="Stop" />
       <Button fx:id="btnSaveAudioFile" disable="true" layoutX="16.0" layoutY="516.0" mnemonicParsing="false" onAction="#handleSaveFinalAudioBtn" prefHeight="26.0" prefWidth="218.0" text="Save Audio Queue " />
+      <ChoiceBox fx:id="voicesChoiceBox1" layoutX="89.0" layoutY="144.0" prefHeight="26.0" prefWidth="109.0" value="Voice1">
+         <items>
+            <FXCollections fx:factory="observableArrayList">
+               <String fx:value="Voice1" />
+               <String fx:value="Voice2" />
+               <String fx:value="Voice3" />
+            </FXCollections>
+         </items>
+      </ChoiceBox>
    </children>
 </AnchorPane>
