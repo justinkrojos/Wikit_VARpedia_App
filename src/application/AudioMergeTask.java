@@ -6,6 +6,7 @@ import javafx.scene.text.Text;
 import javafx.scene.control.ListView;
 
 import java.io.BufferedReader;
+import java.io.IOException;
 import java.io.InputStreamReader;
 
 public class AudioMergeTask extends Task<Void> {
@@ -59,6 +60,12 @@ public class AudioMergeTask extends Task<Void> {
 
     public void stopProcess() {
         playAudioProcess.destroyForcibly();
+    }
+
+    public void removePreviewFile() throws IOException {
+        String cmd = "rm '" + Main.getCreationDir() + "/" + term + "/" + term + "preview.wav'";
+        ProcessBuilder removePreviewpb = new ProcessBuilder("bash", "-c", cmd);
+        Process removePreviewProcess = removePreviewpb.start();
     }
 
 

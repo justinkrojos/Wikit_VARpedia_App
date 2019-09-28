@@ -373,7 +373,7 @@ public class CreateController {
             Alert alert = new Alert(Alert.AlertType.WARNING);
             alert.setTitle("Wikit Search");
             alert.setHeaderText("Audio file is unnamed");
-            alert.setContentText("Please enter a name for the audio file and try again.");
+            alert.setContentText("Please enter a valid name for the audio file and try again.");
             alert.showAndWait();
         } else if (!btnCheckCreationName.isDisabled()) {
             Alert alert = new Alert(Alert.AlertType.WARNING);
@@ -500,7 +500,9 @@ public class CreateController {
                     } catch (FileNotFoundException ex) {
                         ex.printStackTrace();
                     }
-
+                    _audioName.clear();
+                    // Add success?
+                    _audioName.setPromptText("Name Selected Audio");
                 }
             });
 
@@ -523,10 +525,11 @@ public class CreateController {
         }
     }
     */
+
         }
-        _audioName.clear();
-        // Add success?
-        _audioName.setPromptText("Name Selected Audio");
+
+
+
     }
 
 
@@ -544,6 +547,11 @@ public class CreateController {
             public void handle(WorkerStateEvent workerStateEvent) {
                 btnPreviewAudio.setDisable(false);
                 btnStopAudio.setDisable(true);
+                try {
+                    audioMergeTask.removePreviewFile();
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
             }
         });
 /*
@@ -568,6 +576,11 @@ public class CreateController {
             @Override
             public void handle(ActionEvent actionEvent) {
                 audioMergeTask.stopProcess();
+                try {
+                    audioMergeTask.removePreviewFile();
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
                 btnPreviewAudio.setDisable(false);
                 btnStopAudio.setDisable(true);
 
