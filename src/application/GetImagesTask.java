@@ -123,7 +123,7 @@ public class GetImagesTask extends Task<Void> {
     //ffmpeg -framerate 0.3 -i apple%02d.jpg -vf "drawtext=fontfile=myfont.ttf:fontsize=30:fontcolor=white:x=(w-text_w)/2:y=(h-text_h)/2:text='apple'" out.mp4
     private void makeVideo() {
         double length = getAudioLength();
-        length = _numImages/length;
+        //length = _numImages/length;
 
         //System.out.println(length);
 
@@ -133,13 +133,42 @@ public class GetImagesTask extends Task<Void> {
         //String command2 = "ffmpeg -y -i "+Main.getCreationDir()+"/"+_creationName+"/"+"video.mp4 "+ "-vf \"drawtext=fontfile=myfont.ttf:fontsize=30:fontcolor=white:x=(w-text_w)/2:y=(h-text_h)/2:text='"+_term+"'\" "+"-r 25 -vcodec mpeg4 "+Main.getCreationDir()+"/"+_creationName+"/"+_creationName+".mp4";
         //String command1 = "ffmpeg -y -framerate "+length+" -i "+Main.getCreationDir()+"/"+_creationName+"/"+"image%01d.jpg -r 25 -vf \"pad=ceil(iw/2)*2:ceil(ih/2)*2\" "+"-vcodec mpeg4 "+Main.getCreationDir()+"/"+_creationName+"/"+"video.mp4";
 
-        String command = "ffmpeg -y -framerate " + length+" -f image2 -s 800x600 -i \"" + Main.getCreationDir()+"/"+_creationName + "/image%01d.jpg\" -vcodec mpeg4 -crf 25 -pix_fmt yuv420p -vf \"pad=ceil(iw/2)*2:ceil(ih/2)*2\" -r 25 \"" + Main.getCreationDir()+"/"+_creationName  + "/video.mp4\" ; " +
+        /*String command = "ffmpeg -y -framerate " + length+" -f image2 -s 800x600 -i \"" + Main.getCreationDir()+"/"+_creationName + "/image%01d.jpg\" -vcodec mpeg4 -crf 25 -pix_fmt yuv420p -vf \"pad=ceil(iw/2)*2:ceil(ih/2)*2\" -r 25 \"" + Main.getCreationDir()+"/"+_creationName  + "/video.mp4\" ; " +
                 "ffmpeg -y -i \"" + Main.getCreationDir()+"/"+_creationName  + "/video.mp4\" -vf \"drawtext=fontfile=:fontsize=30:fontcolor=white:x=(w-text_w)/2:y=(h-text_h)/2:text='" + _term + "'\" -r 25 -vcodec mpeg4 \"" + Main.getCreationDir()+"/"+_creationName+"/"+_creationName+".mp4\"";
-        System.out.println(command);
+        System.out.println(command);*/
+
         //String command1 = "ffmpeg -y -framerate "+length+" -i "+Main.getCreationDir()+"/"+_creationName+"/"+"image%01d.jpg -vf \"pad=ceil(iw/2)*2:ceil(ih/2)*2\" "+"-r 25 -vcodec mpeg4 "+Main.getCreationDir()+"/"+_creationName+"/"+"video.mp4";
         //String command2 = "ffmpeg -y -i "+Main.getCreationDir()+"/"+_creationName+"/"+"video.mp4 "+ "-vf \"drawtext=fontfile=myfont.ttf:fontsize=30:fontcolor=white:x=(w-text_w)/2:y=(h-text_h)/2:text='"+_term+"'\" "+"-r 25 -vcodec mpeg4 "+Main.getCreationDir()+"/"+_creationName+"/"+_creationName+".mp4";
 
+        String path = Main.getCreationDir()+"/"+_creationName+"/";
+        length = length/_numImages;
+        PrintWriter writer = null;
+        try {
+            writer = new PrintWriter(path+"cmd.txt", "UTF-8");
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+        } catch (UnsupportedEncodingException e) {
+            e.printStackTrace();
+        }
+        for (int i = 0; i < _numImages; i++) {
+            if (i==_numImages-1) {
+                writer.println("file "+path+"image"+i+".jpg");
+                writer.println("duration "+length);
+                writer.println("file "+path+"image"+i+".jpg");
+                break;
+            }
+            writer.println("file "+path+"image"+i+".jpg");
+            writer.println("duration "+length);
+        }
+        writer.close();
+
+
+
         //String command = command1+";"+command2;
+
+        String command1 = "ffmpeg -y -f concat -safe 0 -i "+path+"cmd.txt"+ " -pix_fmt yuv420p -r 25 -vf 'scale=trunc(iw/2)*2:trunc(ih/2)*2' " +path+"video.mp4";
+        String command2 = "ffmpeg -y -i "+Main.getCreationDir()+"/"+_creationName+"/"+"video.mp4 "+ "-vf \"drawtext=fontfile=myfont.ttf:fontsize=30:fontcolor=white:x=(w-text_w)/2:y=(h-text_h)/2:text='"+_term+"'\" "+"-r 25 "+Main.getCreationDir()+"/"+_creationName+"/"+_creationName+".mp4";
+        String command = command1+";"+command2;
 
         //System.out.println(command);
         ProcessBuilder pbb = new ProcessBuilder("/bin/bash","-c",command);
@@ -148,7 +177,7 @@ public class GetImagesTask extends Task<Void> {
             p.waitFor();
 
           //  pb.redirectOutput(Paths.get(Main.getCreationDir()+"/"+_creationName+"/"+_creationName+".mp4"));
-            System.out.println("Done");
+            //System.out.println("Done");
         } catch (IOException | InterruptedException e) {
             e.printStackTrace();
         }

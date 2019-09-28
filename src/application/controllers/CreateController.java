@@ -218,10 +218,20 @@ public class CreateController {
         getImages(term,creationName,numImages);
         _numImageField.setDisable(true);
         btnImage.setDisable(true);
+
+
     }
 
     @FXML
     private void mergeVideoAudio(){
+/*        if (!btnImage.getText().equals("Success!")){
+            Alert alert = new Alert(Alert.AlertType.WARNING);
+            alert.setTitle("Cannot merge video and audio file");
+            alert.setHeaderText(null);
+            alert.setContentText("Please check that the Make Video(under the Get image");
+            alert.showAndWait();
+            return;
+        }*/
         String creationName = _creationNameField.getText();
         MergeTask task = new MergeTask(creationName);
         team.submit(task);
@@ -240,6 +250,7 @@ public class CreateController {
             @Override
             public void handle(WorkerStateEvent workerStateEvent) {
                 btnImage.setText("Success!");
+                mergeVideoAudio();
             }
         });
     }
