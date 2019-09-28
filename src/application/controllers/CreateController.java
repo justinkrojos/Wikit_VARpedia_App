@@ -83,6 +83,7 @@ public class CreateController {
     private Button btnDeleteAudio; // dynamically added
 
     private Stage _currentStage;
+    private HomeController _homeController;
 
     /**
      * Check if creation name is taken, and if so let the user pick if they want to overwrite
@@ -92,8 +93,9 @@ public class CreateController {
 
     ArrayList<String> existingAudio = new ArrayList<String>();
 
-    public void setUp(Stage stage){
+    public void setUp(Stage stage, HomeController homeController){
         _currentStage = stage;
+        _homeController = homeController;
     }
 
     public void initialize(){
@@ -261,18 +263,32 @@ public class CreateController {
                 btnCreate.setText("Success!");
             }
         });
+        Alert alert = new Alert(Alert.AlertType.INFORMATION);
+        alert.setTitle("Creation Complete");
+        alert.setHeaderText(null);
+        alert.setContentText("Creation complete, please refresh list of creations.");
+        alert.showAndWait();
+        _homeController.updateListTree();
     }
 
     private void getImages(String term, String creationName, int numImages) {
         GetImagesTask task = new GetImagesTask(term, creationName, numImages);
         team.submit(task);
+        _currentStage.close();
         task.setOnSucceeded(new EventHandler<WorkerStateEvent>() {
             @Override
             public void handle(WorkerStateEvent workerStateEvent) {
                 btnImage.setText("Success!");
                 mergeVideoAudio();
+
+
             }
         });
+        Alert alert = new Alert(Alert.AlertType.INFORMATION);
+        alert.setTitle("Creation is being created.");
+        alert.setHeaderText(null);
+        alert.setContentText("Creation is being created, you will get a popup when its done.");
+        alert.showAndWait();
     }
 
     // Method below only handles when one chunk is highlighted
