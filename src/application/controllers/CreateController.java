@@ -372,7 +372,7 @@ public class CreateController {
         else {
 
 
-            CreateAudioTask createAudioTask = new CreateAudioTask(_creationNameField.getText(), _textArea.getSelectedText(), _audioName.getText(), voicesChoiceBox.getSelectionModel().getSelectedItem());
+            CreateAudioTask createAudioTask = new CreateAudioTask(_creationNameField.getText(), _textArea.getSelectedText(), _audioName.getText(), getVoicesObject(voicesChoiceBox.getSelectionModel().getSelectedItem()));
             team.submit(createAudioTask);
             ;
 
@@ -466,9 +466,7 @@ public class CreateController {
 
                         }
 
-                        _audioName.clear();
-                        // Add success?
-                        _audioName.setPromptText("Name Selected Audio");
+
 
 
                     } catch (FileNotFoundException ex) {
@@ -498,6 +496,9 @@ public class CreateController {
     }
     */
         }
+        _audioName.clear();
+        // Add success?
+        _audioName.setPromptText("Name Selected Audio");
     }
 
 
@@ -555,6 +556,17 @@ public class CreateController {
 
     }
 
+    public Voices getVoicesObject(String voiceCode) {
+        if (voiceCode.equals("Voice1")) {
+            return Voices.Voice1;
+        }
+        else if (voiceCode.equals("Voice2")) {
+            return Voices.Voice2;
+        }
+        else {
+            return Voices.Voice3;
+        }
+    }
     // FOR WAV FILE PATHNAME: Main.getCreationDir() + "/" + _creationNameField.getText() + "/" + _creationNameField.getText() + ".wav"
 
 }

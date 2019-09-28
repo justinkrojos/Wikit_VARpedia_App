@@ -16,9 +16,10 @@ public class CreateAudioTask extends Task<Void> {
    private String _creationNameField;
    private String _audioName;
    private String _textArea;
-   private String voicePackage;
+   private Voices voicePackage;
 
-    public CreateAudioTask(String _creationNameField, String _textArea, String _audioName, String voicePackage) {
+
+    public CreateAudioTask(String _creationNameField, String _textArea, String _audioName, Voices voicePackage) {
         this._creationNameField = _creationNameField;
         this._textArea = _textArea;
         this._audioName = _audioName;
@@ -33,7 +34,7 @@ public class CreateAudioTask extends Task<Void> {
 
         String cmd = "mkdir -p '" + Main.getCreationDir() + "/" + _creationNameField + "/audio' && " +
                 "echo \"" + _textArea + "\" | text2wave -o '" + Main.getCreationDir() + "/" + _creationNameField + "/audio/" + _audioName + ".wav' -eval \"" +
-                getVoicesObject(voicePackage).getVoicePackage() + "\" 2> '" + Main.getCreationDir() + "/" + _creationNameField + "/audio/error.txt'";
+                voicePackage.getVoicePackage() + "\" 2> '" + Main.getCreationDir() + "/" + _creationNameField + "/audio/error.txt'";
         // System.out.println(cmd);
 
 
@@ -48,17 +49,6 @@ public class CreateAudioTask extends Task<Void> {
 
     }
 
-    public Voices getVoicesObject(String voiceCode) {
-        if (voiceCode.equals("Voice1")) {
-            return Voices.Voice1;
-        }
-        else if (voiceCode.equals("Voice2")) {
-            return Voices.Voice2;
-        }
-        else {
-            return Voices.Voice3;
-        }
-    }
 
     public boolean getError() throws FileNotFoundException {
 
