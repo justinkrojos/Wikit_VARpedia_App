@@ -70,6 +70,8 @@ public class HomeController {
     @FXML
     private Button btnBackward;
 
+    //private MediaView mediaView;
+
     public void initialize(){
         updateListTree();
         btnBackward.setVisible(false);
@@ -84,8 +86,9 @@ public class HomeController {
     @FXML
     private void handleBtnPlay() {
         _player.getChildren().removeAll();
-
-        System.out.println("Playing");//TODO Play/pause stop not done yet
+        _player.getChildren().clear();
+       // btnPlay.setDisable(true);
+        //System.out.println("Playing");//TODO Play/pause stop not done yet
         if (_selectedItem == null) {
             alertNullSelection();
             return;
@@ -106,6 +109,15 @@ public class HomeController {
 
             }
         });
+        player.setOnEndOfMedia(new Runnable() {
+            @Override
+            public void run() {
+                _player.getChildren().removeAll();
+               // btnPlay.setDisable(false);
+                //mediaView = null;
+            }
+        });
+
 
 
         _player.getChildren().add(mediaView);
