@@ -75,6 +75,9 @@ public class CreateController {
     private ChoiceBox<String> voicesChoiceBox;
 
     @FXML
+    private ChoiceBox<String> voicesChoiceBox1;
+
+    @FXML
     private Button btnPreviewAudio;
 
     @FXML
@@ -84,6 +87,7 @@ public class CreateController {
 
     private Stage _currentStage;
     private HomeController _homeController;
+
 
     /**
      * Check if creation name is taken, and if so let the user pick if they want to overwrite
@@ -102,7 +106,7 @@ public class CreateController {
         btnCreate.setVisible(false);
         btnCreate.setDisable(true);
 
-       // _currentStage = (Stage) _ap.getScene().getWindow();
+        // _currentStage = (Stage) _ap.getScene().getWindow();
     }
 
     @FXML
@@ -297,6 +301,8 @@ public class CreateController {
 
         // System.out.println(_creationNameField.getSelectedText());
 
+        PreviewAudioTask previewAudioTask = new PreviewAudioTask(_textArea.getSelectedText(), getVoicesObject(voicesChoiceBox1.getSelectionModel().getSelectedItem()).getVoicePackage());
+
         if (_textArea.getSelectedText().isEmpty()) { // if none highighted, alerts that none was highlighted
             Alert alert = new Alert(Alert.AlertType.WARNING);
             alert.setTitle("Wikit Search");
@@ -315,12 +321,12 @@ public class CreateController {
             }
             else { // tts
 
+                team.submit(previewAudioTask);
+
                 // PREVIEW AS FEMALE - echo {"(voice_akl_nz_cw_cg_cg)",'(SayText "Hello There Young Sir")'} | bash -c festival
                 // PREVIEW AS MALE - echo {"(voice_akl_nz_jdt_diphone)",'(SayText "Hello There Young Sir")'} | bash -c festival
 
-                String cmd = "echo \"" + _textArea.getSelectedText() + "\" | festival --tts";
-                ProcessBuilder previewAudiopb1 = new ProcessBuilder("bash", "-c", cmd);
-                Process process1 = previewAudiopb1.start();
+
             }
         }
     }
@@ -341,7 +347,7 @@ public class CreateController {
             alert.setHeaderText("No words were highlighted");
             alert.setContentText("Please highlight a maximum of 20 words and try again.");
             alert.showAndWait();
-        } else if (_audioName.getText().isEmpty()) { // No audio name given
+        } else  if (!_audioName.getText().matches("[a-zA-Z0-9_-]*") || _audioName.getText().isEmpty()) {
             Alert alert = new Alert(Alert.AlertType.WARNING);
             alert.setTitle("Wikit Search");
             alert.setHeaderText("Audio file is unnamed");
