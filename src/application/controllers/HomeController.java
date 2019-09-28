@@ -87,7 +87,8 @@ public class HomeController {
             return;
         }
         //System.out.println(Main.getCreationDir()+"/"+_selectedItem+"/"+_selectedItem+".mp4");
-        File fileUrl = new File(Main.getCreationDir()+"/"+_selectedItem+"/"+_selectedItem+".mp4");
+        //File fileUrl = new File(Main.getCreationDir()+"/"+_selectedItem+"/"+_selectedItem+".mp4");
+        File fileUrl = new File(Main.getCreationDir()+"/"+_selectedItem+".mp4");
         Media video = new Media(fileUrl.toURI().toString());
         MediaPlayer player = new MediaPlayer(video);
         player.setAutoPlay(true);
@@ -124,7 +125,8 @@ public class HomeController {
         Optional<ButtonType> result = alert.showAndWait();
 
         if (result.get() == ButtonType.OK) {
-            String delCmd = "rm -r "+ Main.getCreationDir() + "/" + _selectedItem;
+            //String delCmd = "rm -r "+ Main.getCreationDir() + "/" + _selectedItem;
+            String delCmd = "rm -r "+ Main.getCreationDir() + "/" + _selectedItem + " " + Main.getCreationDir() + "/"+_selectedItem + ".mp4";
             ProcessBuilder delBuilder = new ProcessBuilder("bash","-c",delCmd);
 
             Process delProcess = null;
@@ -180,7 +182,9 @@ public class HomeController {
         ArrayList<String> list = new ArrayList<String>();
 
         for (final File fileEntry : folder.listFiles()) {
-            list.add(fileEntry.getName());//.replace(".mp4", ""));
+            if (!fileEntry.isDirectory()) {
+                list.add(fileEntry.getName().replace(".mp4",""));//.replace(".mp4", ""));
+            }
         }
 
         Collections.sort(list, String.CASE_INSENSITIVE_ORDER);
