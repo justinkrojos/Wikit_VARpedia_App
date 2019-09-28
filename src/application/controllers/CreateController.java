@@ -18,9 +18,10 @@ import javafx.scene.text.Text;
 import javafx.stage.Stage;
 
 import javax.swing.*;
-import java.io.IOException;
+import java.io.*;
 import java.util.ArrayList;
 import java.util.Optional;
+import java.util.Scanner;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
@@ -279,7 +280,7 @@ public class CreateController {
     }
 
     @FXML
-    public void handleSaveAudioBtn(ActionEvent event) throws IOException {
+    public void handleSaveAudioBtn(ActionEvent event) throws IOException, InterruptedException {
 
         //ERROR HANDLING
         if (!btnSearch.getText().equals("Success!")) {
@@ -288,150 +289,157 @@ public class CreateController {
             alert.setHeaderText("No words were highlighted");
             alert.setContentText("Please wikit search a term and try again.");
             alert.showAndWait();
-        }
-        else if (_textArea.getSelectedText().isEmpty()) { // if none highighted, alerts that none was highlighted
+        } else if (_textArea.getSelectedText().isEmpty()) { // if none highighted, alerts that none was highlighted
             Alert alert = new Alert(Alert.AlertType.WARNING);
             alert.setTitle("Wikit Search");
             alert.setHeaderText("No words were highlighted");
             alert.setContentText("Please highlight a maximum of 20 words and try again.");
             alert.showAndWait();
-        }
-        else if (_audioName.getText().isEmpty()) { // No audio name given
+        } else if (_audioName.getText().isEmpty()) { // No audio name given
             Alert alert = new Alert(Alert.AlertType.WARNING);
             alert.setTitle("Wikit Search");
             alert.setHeaderText("Audio file is unnamed");
             alert.setContentText("Please enter a name for the audio file and try again.");
             alert.showAndWait();
-        }
-        else if (!btnCheckCreationName.isDisabled()) {
+        } else if (!btnCheckCreationName.isDisabled()) {
             Alert alert = new Alert(Alert.AlertType.WARNING);
             alert.setTitle("Wikit Search");
             alert.setHeaderText("Creation is unnamed");
             alert.setContentText("Please name your creation and try again.");
             alert.showAndWait();
-        }
+        } else if (_textArea.getSelectedText().split("\\s+").length > 20) { // alerts if maxmimum word length exceeded
+            Alert alert = new Alert(Alert.AlertType.WARNING);
+            alert.setTitle("Wikit Search");
+            alert.setHeaderText("Word Maximum Exceeded");
+            alert.setContentText("Please highlight a maximum of 20 words and try again.");
+            alert.showAndWait();
+        } else if (existingAudio.contains(_audioName.getText())) {
+            Alert alert = new Alert(Alert.AlertType.WARNING);
+            alert.setTitle("Wikit Search");
+            alert.setHeaderText("Audio name taken");
+            alert.setContentText("Please rename your audio and try again.");
+            alert.showAndWait();
+        }// Create file
+        // AUDIO NAME error handling? i.e. AUDIO NAME already exists?
+
+
         else {
-            String[] words = _textArea.getSelectedText().split("\\s+");
-            if (words.length > 20) { // alerts if maxmimum word length exceeded
-                Alert alert = new Alert(Alert.AlertType.WARNING);
-                alert.setTitle("Wikit Search");
-                alert.setHeaderText("Word Maximum Exceeded");
-                alert.setContentText("Please highlight a maximum of 20 words and try again.");
-                alert.showAndWait();
-            }
-            else { // Create file
-                // AUDIO NAME error handling? i.e. AUDIO NAME already exists?
-
-                if (existingAudio.contains(_audioName.getText())) {
-                    Alert alert = new Alert(Alert.AlertType.WARNING);
-                    alert.setTitle("Wikit Search");
-                    alert.setHeaderText("Audio name taken");
-                    alert.setContentText("Please rename your audio and try again.");
-                    alert.showAndWait();
-                }
-                else {
-
-                    existingAudio.add(_audioName.getText());
-
-                    // System.out.println(getVoicesObject(voicesChoiceBox.getSelectionModel().getSelectedItem()).getVoicePackage());
-                    // System.out.println(Voices.Voice1.getVoicePackage());
-
-                    String cmd = "mkdir -p " + Main.getCreationDir() + "/" + _creationNameField.getText() + "/audio && " +
-                            "echo \"" + _textArea.getSelectedText() + "\" | text2wave -o " + Main.getCreationDir() + "/" + _creationNameField.getText() + "/audio/'" + _audioName.getText() + "'.wav -eval \"" +
-                            getVoicesObject(voicesChoiceBox.getSelectionModel().getSelectedItem()).getVoicePackage() + "\"";
-                    // System.out.println(cmd);
-
-                    ProcessBuilder saveAudiopb = new ProcessBuilder("bash", "-c", cmd);
-                    Process process1 = saveAudiopb.start();
-
-                    Text audioLabel = new Text(_audioName.getText());
-
-                    btnDeleteAudio = new Button("Delete");
-                    btnDeleteAudio.setVisible(false);
-
-                    Region region1 = new Region();
-
-                    HBox hb = new HBox(audioLabel, region1, btnDeleteAudio);
-                    hb.setHgrow(region1, Priority.ALWAYS);
-                    hb.setAlignment(Pos.CENTER_LEFT);
-
-                    _audioList.getItems().addAll(hb);
-
-                    // _audioList.getItems().add(_audioName.getText() + " [" + button.getText() + "]");
 
 
+            CreateAudioTask createAudioTask = new CreateAudioTask(_creationNameField.getText(), _textArea.getSelectedText(), _audioName.getText(), voicesChoiceBox.getSelectionModel().getSelectedItem());
+            team.submit(createAudioTask);
+            ;
 
-                    if ((btnStopAudio.isDisabled() && !btnPreviewAudio.isDisabled()) || (btnStopAudio.isDisabled() && btnPreviewAudio.isDisabled())) {
-                        btnPreviewAudio.setDisable(false);
-                    }
+            createAudioTask.setOnSucceeded(new EventHandler<WorkerStateEvent>() {
+                @Override
+                public void handle(WorkerStateEvent workerStateEvent) {
+                    try {
 
-                    btnSaveAudioFile.setDisable(false);
+                        if (createAudioTask.getError()) {
+                            Alert alert = new Alert(Alert.AlertType.WARNING);
+                            alert.setTitle("Wikit Search");
+                            alert.setHeaderText("The selected words cannot be synthesised");
+                            alert.setContentText("Please highlight other words and try again. Otherwise use Voice1 for better results.");
+                            alert.showAndWait();
+
+                        } else {
+                            existingAudio.add(_audioName.getText());
 
 
-                    // DELETE BUTTON EVENT HANDLING
+                            Text audioLabel = new Text(_audioName.getText());
 
-                    String cmd2 = "rm '" + Main.getCreationDir() + "/" + _creationNameField.getText() + "/audio/" + _audioName.getText() + "'.wav";
+                            btnDeleteAudio = new Button("Delete");
+                            btnDeleteAudio.setVisible(false);
 
-                    final String cmdToDelete = cmd2;
-                    final HBox hbToDelete = hb;
-                    final Button btnToEnable = btnDeleteAudio;
+                            Region region1 = new Region();
 
-                    // DEL BTN visible when listitem clicked
-                    _audioList.setOnMouseClicked(new EventHandler<MouseEvent>() {
-                        @Override
-                        public void handle(MouseEvent mouseEvent) {
+                            HBox hb = new HBox(audioLabel, region1, btnDeleteAudio);
+                            hb.setHgrow(region1, Priority.ALWAYS);
+                            hb.setAlignment(Pos.CENTER_LEFT);
 
-                            for (int i = 0; i < _audioList.getItems().size(); i++) {
+                            _audioList.getItems().addAll(hb);
 
-                                HBox hb = _audioList.getItems().get(i);
-                                Button button = (Button)hb.getChildren().get(2);
-                                button.setVisible(false);
-                                if (_audioList.getSelectionModel().getSelectedItem().equals(hb)) {
-                                    button.setVisible(true);
+                            // _audioList.getItems().add(_audioName.getText() + " [" + button.getText() + "]");
+
+
+                            if ((btnStopAudio.isDisabled() && !btnPreviewAudio.isDisabled()) || (btnStopAudio.isDisabled() && btnPreviewAudio.isDisabled())) {
+                                btnPreviewAudio.setDisable(false);
+                            }
+
+                            btnSaveAudioFile.setDisable(false);
+
+
+                            // DELETE BUTTON EVENT HANDLING
+
+                            String cmd2 = "rm '" + Main.getCreationDir() + "/" + _creationNameField.getText() + "/audio/" + _audioName.getText() + "'.wav";
+
+                            final String cmdToDelete = cmd2;
+                            final HBox hbToDelete = hb;
+                            final Button btnToEnable = btnDeleteAudio;
+
+                            // DEL BTN visible when listitem clicked
+                            _audioList.setOnMouseClicked(new EventHandler<MouseEvent>() {
+                                @Override
+                                public void handle(MouseEvent mouseEvent) {
+
+                                    for (int i = 0; i < _audioList.getItems().size(); i++) {
+
+                                        HBox hb = _audioList.getItems().get(i);
+                                        Button button = (Button) hb.getChildren().get(2);
+                                        button.setVisible(false);
+                                        if (_audioList.getSelectionModel().getSelectedItem().equals(hb)) {
+                                            button.setVisible(true);
+                                        }
+                                    }
                                 }
-                            }
+                            });
+
+                            btnDeleteAudio.setOnAction(new EventHandler<ActionEvent>() { // Confirmation message?
+                                                           @Override
+                                                           public void handle(ActionEvent actionEvent) {
+                                                               // System.out.println(hbToDelete);
+                                                               Text textToDelete = (Text) hbToDelete.getChildren().get(0);
+                                                               existingAudio.remove(textToDelete.getText());
+                                                               _audioList.getItems().remove(hbToDelete);
+                                                               if (_audioList.getItems().size() == 0) {
+                                                                   btnPreviewAudio.setDisable(true);
+                                                                   btnSaveAudioFile.setDisable(true);
+                                                               }
+                                                               // System.out.println(cmd2);
+
+                                                               ProcessBuilder deleteAudiopb = new ProcessBuilder("bash", "-c", cmdToDelete);
+                                                               try {
+                                                                   Process deleteProcess = deleteAudiopb.start();
+                                                               } catch (IOException e) {
+                                                                   e.printStackTrace();
+                                                               }
+
+                                                           }
+                                                       }
+                            );
+
                         }
-                    });
 
-                    btnDeleteAudio.setOnAction(new EventHandler<ActionEvent>() { // Confirmation message?
-                        @Override
-                        public void handle(ActionEvent actionEvent) {
-                            // System.out.println(hbToDelete);
-                            Text textToDelete = (Text)hbToDelete.getChildren().get(0);
-                            existingAudio.remove(textToDelete.getText());
-                            _audioList.getItems().remove(hbToDelete);
-                            if (_audioList.getItems().size() == 0) {
-                                btnPreviewAudio.setDisable(true);
-                                btnSaveAudioFile.setDisable(true);
-                            }
-                            // System.out.println(cmd2);
+                        _audioName.clear();
+                        // Add success?
+                        _audioName.setPromptText("Name Selected Audio");
 
-                            ProcessBuilder deleteAudiopb = new ProcessBuilder("bash", "-c", cmdToDelete);
-                            try {
-                                Process deleteProcess = deleteAudiopb.start();
-                            } catch (IOException e) {
-                                e.printStackTrace();
-                            }
 
-                        }
+                    } catch (FileNotFoundException ex) {
+                        ex.printStackTrace();
                     }
-                    );
 
                 }
-                _audioName.clear();
-                // Add success?
-                _audioName.setPromptText("Name Selected Audio");
-            }
+            });
 
 
-        }
-        // Save btn should create mp3 file and store it into a directory
-        // Male or Female voices (for now)
-        // When Create btn clicked: pop-up window that shows all mp3 files, with male/female button included that previews audio
-    }
+            // Save btn should create mp3 file and store it into a directory
+            // Male or Female voices (for now)
+            // When Create btn clicked: pop-up window that shows all mp3 files, with male/female button included that previews audio
 
 
-    public Voices getVoicesObject(String voiceCode) {
+
+    /* public Voices getVoicesObject(String voiceCode) {
         if (voiceCode.equals("Voice1")) {
             return Voices.Voice1;
         }
@@ -440,6 +448,9 @@ public class CreateController {
         }
         else {
             return Voices.Voice3;
+        }
+    }
+    */
         }
     }
 
