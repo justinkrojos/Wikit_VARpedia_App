@@ -203,10 +203,10 @@ public class GetImagesTask extends Task<Void> {
 
     private void flickr() {
         try{
-            String apiKey = "e37d6b63e1b4bceb47a42a3a37f316e3";
-            String sharedSecret = "42ccf0520e0515f1";
-            /*String apiKey = getAPIKey("apiKey");
-            String sharedSecret = getAPIKey("sharedSecret");*/
+/*            String apiKey = "e37d6b63e1b4bceb47a42a3a37f316e3";
+            String sharedSecret = "42ccf0520e0515f1";*/
+            String apiKey = getAPIKey("apiKey");
+            String sharedSecret = getAPIKey("sharedSecret");
             Flickr flickr = new Flickr(apiKey, sharedSecret, new REST());
             String query = _term;
             int resultsPerPage = _numImages;
@@ -243,8 +243,11 @@ public class GetImagesTask extends Task<Void> {
     public static String getAPIKey(String key) throws Exception {
         // TODO fix the following based on where you will have your config file stored
 
-        String config = System.getProperty("user.dir")
-                + System.getProperty("file.separator")+ "flickr-api-keys.txt";
+/*        String config = System.getProperty("user.dir")
+                + System.getProperty("file.separator")+ "flickr-api-keys.txt";*/
+        String creationsDir = new File(Main.class.getProtectionDomain().getCodeSource().getLocation().toURI()).getAbsolutePath();
+        creationsDir = creationsDir.substring(0,creationsDir.lastIndexOf("/"));
+        String config = creationsDir+ "/flickr-api-keys.txt";
 
 //		String config = System.getProperty("user.home")
 //				+ System.getProperty("file.separator")+ "bin"
