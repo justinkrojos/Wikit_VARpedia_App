@@ -95,7 +95,8 @@ public class CreateController {
         }
         String creationDir = Main.getCreationDir();
         String creationFile = creationDir + "/" +_creationNameField.getText();
-        String cmd = "[ -e " + creationFile + " ]";
+        //String cmd = "[ -e " + creationFile + " ]";
+        String cmd = "[ -e " + creationFile+".mp4" + " ] || [ -e " + creationFile + " ]";
         ProcessBuilder checkName = new ProcessBuilder("bash", "-c", cmd);
 
         Process checkNamep = null;
@@ -113,7 +114,7 @@ public class CreateController {
 
                 Optional<ButtonType> result = alert.showAndWait();
                 if(result.get() == btnOverwrite) {
-                    String cmdOverwrite = "rm -r " + creationFile;
+                    String cmdOverwrite = "rm -r " + creationFile + " " + creationFile + ".mp4";
                     ProcessBuilder overwritePB = new ProcessBuilder("bash", "-c", cmdOverwrite);
                     Process overwriteP = overwritePB.start();
                     overwriteP.waitFor();
@@ -183,11 +184,11 @@ public class CreateController {
     @FXML
     private void handleGetImages() {
         //TODO CHECK audio save button is pressed.
-        if(btnSearch.isDisabled() == false || btnCheckCreationName.isDisabled() == false) {
+        if(btnSearch.isDisabled() == false || btnCheckCreationName.isDisabled() == false || !btnSaveAudioFile.getText().equals("Save and Overwrite")) {
             Alert alert = new Alert(Alert.AlertType.INFORMATION);
             alert.setTitle("Cannot get images");
             alert.setHeaderText(null);
-            alert.setContentText("Cannot get images. Make sure a valid term or creation name is entered.");
+            alert.setContentText("Cannot get images. Make sure a valid term or creation name is entered. And make sure you have a saved audio file.");
             alert.showAndWait();
             return;
         }
