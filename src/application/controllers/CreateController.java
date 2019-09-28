@@ -190,29 +190,40 @@ public class CreateController {
      */
     @FXML
     public void handleSearch() {
-        WikitSearchTask task = new WikitSearchTask(_termField.getText());
-        team.submit(task);
-        btnSearch.setDisable(true);
-        task.setOnSucceeded(new EventHandler<WorkerStateEvent>() {
-            @Override
-            public void handle(WorkerStateEvent workerStateEvent) {
-                //TODO What happens when wikit search fails?? invalid wikie searches not handled.
-                if (_termField.getText().isEmpty() | task.getExit() != 0 | task.getOutput().equals( _termField.getText()+" not found :^(")) {
-                    Alert alert = new Alert(Alert.AlertType.WARNING);
-                    alert.setTitle("Wikit Search");
-                    alert.setHeaderText("Please enter a valid serach term");
-                    alert.setContentText("Enter a valid search term and try again.");
-                    alert.showAndWait();
-                    btnSearch.setDisable(false);
-                    return;
-                }
+        if (btnSearch.getText().equals("New Search")) {
+            _textArea.setText("");
+            _audioName.setText("");
+            _termField.setDisable(false);
+            _termField.setText("");
+            btnSearch.setText("Search");
+        }
 
-                _textArea.setText(task.getOutput());
-                btnSearch.setText("Success!");
-                btnSearch.setDisable(true);
-                _termField.setDisable(true);
-            }
-        });
+        else {
+            WikitSearchTask task = new WikitSearchTask(_termField.getText());
+            team.submit(task);
+            btnSearch.setDisable(true);
+            task.setOnSucceeded(new EventHandler<WorkerStateEvent>() {
+                @Override
+                public void handle(WorkerStateEvent workerStateEvent) {
+                    //TODO What happens when wikit search fails?? invalid wikie searches not handled.
+                    if (_termField.getText().isEmpty() | task.getExit() != 0 | task.getOutput().equals( _termField.getText()+" not found :^(")) {
+                        Alert alert = new Alert(Alert.AlertType.WARNING);
+                        alert.setTitle("Wikit Search");
+                        alert.setHeaderText("Please enter a valid search term");
+                        alert.setContentText("Enter a valid search term and try again.");
+                        alert.showAndWait();
+                        btnSearch.setDisable(false);
+                        return;
+                    }
+                    else {
+                        _textArea.setText(task.getOutput());
+                        btnSearch.setText("New Search");
+                        btnSearch.setDisable(false);
+                        _termField.setDisable(true);
+                    }
+                }
+            });
+        }
     }
 
     /**
@@ -221,7 +232,7 @@ public class CreateController {
     @FXML
     private void handleGetImages() {
         //TODO CHECK audio save button is pressed.
-        if(btnSearch.isDisabled() == false || btnCheckCreationName.isDisabled() == false || !btnSaveAudioFile.getText().equals("Save and Overwrite")) {
+        if(btnCheckCreationName.isDisabled() == false || !btnSaveAudioFile.getText().equals("Save and Overwrite")) {
             Alert alert = new Alert(Alert.AlertType.INFORMATION);
             alert.setTitle("Cannot get images");
             alert.setHeaderText(null);
@@ -322,7 +333,7 @@ public class CreateController {
 
         PreviewAudioTask previewAudioTask = new PreviewAudioTask(_textArea.getSelectedText(), getVoicesObject(voicesChoiceBox1.getSelectionModel().getSelectedItem()).getVoicePackage());
 
-        if (_textArea.getSelectedText().isEmpty()) { // if none highighted, alerts that none was highlighted
+        if (_textArea.getSelectedText().isEmpty()) {
             Alert alert = new Alert(Alert.AlertType.WARNING);
             alert.setTitle("Wikit Search");
             alert.setHeaderText("No words were highlighted");
@@ -349,14 +360,14 @@ public class CreateController {
     @FXML
     public void handleSaveAudioBtn(ActionEvent event) throws IOException, InterruptedException {
 
-        //ERROR HANDLING
-        if (!btnSearch.getText().equals("Success!")) {
+
+        if (_termField.getText().isEmpty()) {
             Alert alert = new Alert(Alert.AlertType.WARNING);
             alert.setTitle("Wikit Search");
             alert.setHeaderText("No words were highlighted");
             alert.setContentText("Please wikit search a term and try again.");
             alert.showAndWait();
-        } else if (_textArea.getSelectedText().isEmpty()) { // if none highighted, alerts that none was highlighted
+        } else if (_textArea.getSelectedText().isEmpty()) {
             Alert alert = new Alert(Alert.AlertType.WARNING);
             alert.setTitle("Wikit Search");
             alert.setHeaderText("No words were highlighted");
@@ -374,7 +385,7 @@ public class CreateController {
             alert.setHeaderText("Creation is unnamed");
             alert.setContentText("Please name your creation and try again.");
             alert.showAndWait();
-        } else if (_textArea.getSelectedText().split("\\s+").length > 20) { // alerts if maxmimum word length exceeded
+        } else if (_textArea.getSelectedText().split("\\s+").length > 20) {
             Alert alert = new Alert(Alert.AlertType.WARNING);
             alert.setTitle("Wikit Search");
             alert.setHeaderText("Word Maximum Exceeded");
@@ -451,28 +462,28 @@ public class CreateController {
                             });
 
                             btnDeleteAudio.setOnAction(new EventHandler<ActionEvent>() {
-                                @Override
-                                public void handle(ActionEvent actionEvent) {
+                                                           @Override
+                                                           public void handle(ActionEvent actionEvent) {
 
-                                    Text textToDelete = (Text) hbToDelete.getChildren().get(0);
-                                    existingAudio.remove(textToDelete.getText());
+                                                               Text textToDelete = (Text) hbToDelete.getChildren().get(0);
+                                                               existingAudio.remove(textToDelete.getText());
 
-                                    _audioList.getItems().remove(hbToDelete);
+                                                               _audioList.getItems().remove(hbToDelete);
 
-                                    if (_audioList.getItems().size() == 0) {
-                                        btnPreviewAudio.setDisable(true);
-                                        btnSaveAudioFile.setDisable(true);
-                                    }
+                                                               if (_audioList.getItems().size() == 0) {
+                                                                   btnPreviewAudio.setDisable(true);
+                                                                   btnSaveAudioFile.setDisable(true);
+                                                               }
 
-                                    ProcessBuilder deleteAudiopb = new ProcessBuilder("bash", "-c", cmdToDelete);
-                                    try {
-                                        Process deleteProcess = deleteAudiopb.start();
-                                    } catch (IOException e) {
-                                        e.printStackTrace();
-                                    }
+                                                               ProcessBuilder deleteAudiopb = new ProcessBuilder("bash", "-c", cmdToDelete);
+                                                               try {
+                                                                   Process deleteProcess = deleteAudiopb.start();
+                                                               } catch (IOException e) {
+                                                                   e.printStackTrace();
+                                                               }
 
-                                }
-                            }
+                                                           }
+                                                       }
                             );
 
                         }
