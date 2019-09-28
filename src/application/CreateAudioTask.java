@@ -29,21 +29,13 @@ public class CreateAudioTask extends Task<Void> {
     @Override
     protected Void call() throws Exception {
 
-        // System.out.println(getVoicesObject(voicesChoiceBox.getSelectionModel().getSelectedItem()).getVoicePackage());
-        // System.out.println(Voices.Voice1.getVoicePackage());
-
         String cmd = "mkdir -p '" + Main.getCreationDir() + "/" + _creationNameField + "/audio' && " +
                 "echo \"" + _textArea + "\" | text2wave -o '" + Main.getCreationDir() + "/" + _creationNameField + "/audio/" + _audioName + ".wav' -eval \"" +
                 voicePackage.getVoicePackage() + "\" 2> '" + Main.getCreationDir() + "/" + _creationNameField + "/audio/error.txt'";
-        // System.out.println(cmd);
-
-
 
         ProcessBuilder saveAudiopb = new ProcessBuilder("bash", "-c", cmd);
         Process process1 = saveAudiopb.start();
         process1.waitFor();
-
-
 
         return null;
 
@@ -55,7 +47,6 @@ public class CreateAudioTask extends Task<Void> {
         boolean error;
 
         File errorFile = new File(  Main.getCreationDir() + "/" + _creationNameField + "/audio/error.txt");
-
         Scanner sc = new Scanner(errorFile);
 
         if (sc.hasNextLine()) {

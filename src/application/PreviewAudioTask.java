@@ -27,9 +27,7 @@ public class PreviewAudioTask extends Task<Void> {
     @Override
     protected Void call() throws Exception {
 
-        // String cmd = "echo \"" + _textArea.getSelectedText() + "\" | festival --tts";
         String cmd = "echo {\"(" + voice + ")\".'(SayText \"" + textArea + "\")'} | bash -c festival";
-        // System.out.println(cmd);
         ProcessBuilder previewAudiopb1 = new ProcessBuilder("bash", "-c", cmd);
         processAudioPreview = previewAudiopb1.start();
         processAudioPreview.waitFor();
@@ -37,7 +35,6 @@ public class PreviewAudioTask extends Task<Void> {
         return null;
 
     }
-
 
     public void stopProcess() {
         processAudioPreview.destroyForcibly();

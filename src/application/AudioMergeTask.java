@@ -32,12 +32,10 @@ public class AudioMergeTask extends Task<Void> {
             Text audioListLabel = (Text)audioListhb.getChildren().get(0);
 
             cmd = cmd + " '" + Main.getCreationDir() + "/" + term + "/audio/" + audioListLabel.getText() + ".wav'";
-            // System.out.println(cmd);
         }
 
         if (preview) {
             cmd = cmd + " '" + Main.getCreationDir() + "/" + term + "/" + term + "preview.wav' && ffplay -autoexit -nodisp '" + Main.getCreationDir() + "/" + term + "/" + term + "preview.wav'";
-            // System.out.println(cmd);
         }
         else {
             cmd = cmd + " '" + Main.getCreationDir() + "/" + term + "/" + term + ".wav'";
@@ -47,12 +45,6 @@ public class AudioMergeTask extends Task<Void> {
         ProcessBuilder playFullAudiopb = new ProcessBuilder("bash", "-c", cmd);
         playAudioProcess = playFullAudiopb.start();
         playAudioProcess.waitFor();
-
-       // System.out.println(cmd);
-
-        // System.out.println(cmd);
-
-
 
         return null;
 

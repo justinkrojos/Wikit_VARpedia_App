@@ -317,11 +317,8 @@ public class CreateController {
         alert.show();
     }
 
-    // Method below only handles when one chunk is highlighted
     @FXML
     public void handleAudioPreview() throws IOException {
-
-        // System.out.println(_creationNameField.getSelectedText());
 
         PreviewAudioTask previewAudioTask = new PreviewAudioTask(_textArea.getSelectedText(), getVoicesObject(voicesChoiceBox1.getSelectionModel().getSelectedItem()).getVoicePackage());
 
@@ -334,20 +331,16 @@ public class CreateController {
         }
         else {
             String[] words = _textArea.getSelectedText().split("\\s+");
-            if (words.length > 20) { // alerts if maxmimum word length exceeded
+            if (words.length > 20) {
                 Alert alert = new Alert(Alert.AlertType.WARNING);
                 alert.setTitle("Wikit Search");
                 alert.setHeaderText("Word Maximum Exceeded");
                 alert.setContentText("Please highlight a maximum of 20 words and try again.");
                 alert.showAndWait();
             }
-            else { // tts
+            else {
 
                 team.submit(previewAudioTask);
-
-                // PREVIEW AS FEMALE - echo {"(voice_akl_nz_cw_cg_cg)",'(SayText "Hello There Young Sir")'} | bash -c festival
-                // PREVIEW AS MALE - echo {"(voice_akl_nz_jdt_diphone)",'(SayText "Hello There Young Sir")'} | bash -c festival
-
 
             }
         }
@@ -393,12 +386,8 @@ public class CreateController {
             alert.setHeaderText("Audio name taken");
             alert.setContentText("Please rename your audio and try again.");
             alert.showAndWait();
-        }// Create file
-        // AUDIO NAME error handling? i.e. AUDIO NAME already exists?
-
-
+        }
         else {
-
 
             CreateAudioTask createAudioTask = new CreateAudioTask(_creationNameField.getText(), _textArea.getSelectedText(), _audioName.getText(), getVoicesObject(voicesChoiceBox.getSelectionModel().getSelectedItem()));
             team.submit(createAudioTask);
@@ -433,25 +422,17 @@ public class CreateController {
 
                             _audioList.getItems().addAll(hb);
 
-                            // _audioList.getItems().add(_audioName.getText() + " [" + button.getText() + "]");
-
-
                             if ((btnStopAudio.isDisabled() && !btnPreviewAudio.isDisabled()) || (btnStopAudio.isDisabled() && btnPreviewAudio.isDisabled())) {
                                 btnPreviewAudio.setDisable(false);
                             }
 
                             btnSaveAudioFile.setDisable(false);
 
-
-                            // DELETE BUTTON EVENT HANDLING
-
                             String cmd2 = "rm '" + Main.getCreationDir() + "/" + _creationNameField.getText() + "/audio/" + _audioName.getText() + "'.wav";
 
                             final String cmdToDelete = cmd2;
                             final HBox hbToDelete = hb;
-                            final Button btnToEnable = btnDeleteAudio;
 
-                            // DEL BTN visible when listitem clicked
                             _audioList.setOnMouseClicked(new EventHandler<MouseEvent>() {
                                 @Override
                                 public void handle(MouseEvent mouseEvent) {
@@ -461,6 +442,7 @@ public class CreateController {
                                         HBox hb = _audioList.getItems().get(i);
                                         Button button = (Button) hb.getChildren().get(2);
                                         button.setVisible(false);
+
                                         if (_audioList.getSelectionModel().getSelectedItem().equals(hb)) {
                                             button.setVisible(true);
                                         }
@@ -468,28 +450,29 @@ public class CreateController {
                                 }
                             });
 
-                            btnDeleteAudio.setOnAction(new EventHandler<ActionEvent>() { // Confirmation message?
-                                                           @Override
-                                                           public void handle(ActionEvent actionEvent) {
-                                                               // System.out.println(hbToDelete);
-                                                               Text textToDelete = (Text) hbToDelete.getChildren().get(0);
-                                                               existingAudio.remove(textToDelete.getText());
-                                                               _audioList.getItems().remove(hbToDelete);
-                                                               if (_audioList.getItems().size() == 0) {
-                                                                   btnPreviewAudio.setDisable(true);
-                                                                   btnSaveAudioFile.setDisable(true);
-                                                               }
-                                                               // System.out.println(cmd2);
+                            btnDeleteAudio.setOnAction(new EventHandler<ActionEvent>() {
+                                @Override
+                                public void handle(ActionEvent actionEvent) {
 
-                                                               ProcessBuilder deleteAudiopb = new ProcessBuilder("bash", "-c", cmdToDelete);
-                                                               try {
-                                                                   Process deleteProcess = deleteAudiopb.start();
-                                                               } catch (IOException e) {
-                                                                   e.printStackTrace();
-                                                               }
+                                    Text textToDelete = (Text) hbToDelete.getChildren().get(0);
+                                    existingAudio.remove(textToDelete.getText());
 
-                                                           }
-                                                       }
+                                    _audioList.getItems().remove(hbToDelete);
+
+                                    if (_audioList.getItems().size() == 0) {
+                                        btnPreviewAudio.setDisable(true);
+                                        btnSaveAudioFile.setDisable(true);
+                                    }
+
+                                    ProcessBuilder deleteAudiopb = new ProcessBuilder("bash", "-c", cmdToDelete);
+                                    try {
+                                        Process deleteProcess = deleteAudiopb.start();
+                                    } catch (IOException e) {
+                                        e.printStackTrace();
+                                    }
+
+                                }
+                            }
                             );
 
                         }
@@ -505,31 +488,7 @@ public class CreateController {
                     _audioName.setPromptText("Name Selected Audio");
                 }
             });
-
-
-            // Save btn should create mp3 file and store it into a directory
-            // Male or Female voices (for now)
-            // When Create btn clicked: pop-up window that shows all mp3 files, with male/female button included that previews audio
-
-
-
-    /* public Voices getVoicesObject(String voiceCode) {
-        if (voiceCode.equals("Voice1")) {
-            return Voices.Voice1;
         }
-        else if (voiceCode.equals("Voice2")) {
-            return Voices.Voice2;
-        }
-        else {
-            return Voices.Voice3;
-        }
-    }
-    */
-
-        }
-
-
-
     }
 
 
@@ -554,23 +513,6 @@ public class CreateController {
                 }
             }
         });
-/*
-        String cmd = "sox";
-
-        for (int i = 0; i < _audioList.getItems().size(); i++) {
-            Text audioListLabel = (Text)_audioList.getItems().get(i).getChildren().get(0);
-
-            cmd = cmd + " '" + Main.getCreationDir() + "/" + _creationNameField.getText() + "/audio/" + audioListLabel.getText() + ".wav'";
-            // System.out.println(cmd);
-        }
-        cmd = cmd + " '" + Main.getCreationDir() + "/" + _creationNameField.getText() + "/" + _creationNameField.getText() + ".wav'" +
-                " && ffplay -autoexit -nodisp '" + Main.getCreationDir() + "/" + _creationNameField.getText() + "/" + _creationNameField.getText() + ".wav'";
-
-        // System.out.println(cmd);
-        ProcessBuilder playFullAudiopb = new ProcessBuilder("bash", "-c", cmd);
-        Process playAudioProcess = playFullAudiopb.start();
-*/
-
 
         btnStopAudio.setOnAction(new EventHandler<ActionEvent>() {
             @Override
@@ -608,6 +550,5 @@ public class CreateController {
             return Voices.Voice3;
         }
     }
-    // FOR WAV FILE PATHNAME: Main.getCreationDir() + "/" + _creationNameField.getText() + "/" + _creationNameField.getText() + ".wav"
 
 }
