@@ -93,6 +93,11 @@ public class CreateController {
 
     ArrayList<String> existingAudio = new ArrayList<String>();
 
+    /**
+     * Set up the fields.
+     * @param stage
+     * @param homeController
+     */
     public void setUp(Stage stage, HomeController homeController){
         _currentStage = stage;
         _homeController = homeController;
@@ -105,6 +110,9 @@ public class CreateController {
        // _currentStage = (Stage) _ap.getScene().getWindow();
     }
 
+    /**
+     * Checks the creation name and handles overwriting creation name.
+     */
     @FXML
     public void handleCreationName() {
         if(!_creationNameField.getText().matches("[a-zA-Z0-9_-]*") || _creationNameField.getText().isEmpty()) {
@@ -203,6 +211,9 @@ public class CreateController {
         });
     }
 
+    /**
+     * Gets the images and creates the creation video.
+     */
     @FXML
     private void handleGetImages() {
         //TODO CHECK audio save button is pressed.
@@ -244,6 +255,10 @@ public class CreateController {
 
     }
 
+    /**
+     * Handles the create button and merges audio with video.
+     * Button not used anymore!!!
+     */
     @FXML
     private void mergeVideoAudio(){
 /*        if (!btnImage.getText().equals("Success!")){
@@ -263,6 +278,7 @@ public class CreateController {
                 btnCreate.setText("Success!");
             }
         });
+        _homeController.updateListTree();
         Alert alert = new Alert(Alert.AlertType.INFORMATION);
         alert.setTitle("Creation Complete");
         alert.setHeaderText(null);
@@ -271,6 +287,12 @@ public class CreateController {
         _homeController.updateListTree();
     }
 
+    /**
+     * Downloads the images.
+     * @param term
+     * @param creationName
+     * @param numImages
+     */
     private void getImages(String term, String creationName, int numImages) {
         GetImagesTask task = new GetImagesTask(term, creationName, numImages);
         team.submit(task);
@@ -288,7 +310,7 @@ public class CreateController {
         alert.setTitle("Creation is being created.");
         alert.setHeaderText(null);
         alert.setContentText("Creation is being created, you will get a popup when its done.");
-        alert.showAndWait();
+        alert.show();
     }
 
     // Method below only handles when one chunk is highlighted

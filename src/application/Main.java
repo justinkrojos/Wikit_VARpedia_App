@@ -37,6 +37,10 @@ public class Main extends Application {
         return _primaryStage;
     }*/
 
+    /**
+     * Gets the creation directory.
+     * @return
+     */
     public static String getCreationDir() {
         String creationsDir = null;
         try {

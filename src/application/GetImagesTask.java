@@ -121,6 +121,10 @@ public class GetImagesTask extends Task<Void> {
     //ffmpeg -r 1/5 -f image2 -s 800x600 -i /media/sf_VBoxSharedFolder/Ass3/IdeaProjects/206Assignment3/out/production/creations/apple3/image%01d.jpg -vcodec libx264 -crf 25 -pix_fmt yuv420p -vf "drawtext=fontfile=myfont.ttf:fontsize=30:fontcolor=white:x=(w-text_w)/2:y=(h-text_h)/2:text='apple'" out.mp4
    //ffmpeg -framerate 0.3 -i apple%02d.jpg -r 25  out.mp4
     //ffmpeg -framerate 0.3 -i apple%02d.jpg -vf "drawtext=fontfile=myfont.ttf:fontsize=30:fontcolor=white:x=(w-text_w)/2:y=(h-text_h)/2:text='apple'" out.mp4
+
+    /**
+     * This method create the slideshow and adds sub titles.
+     */
     private void makeVideo() {
         double length = getAudioLength();
         //length = _numImages/length;
@@ -185,6 +189,10 @@ public class GetImagesTask extends Task<Void> {
 
     }
 
+    /**
+     * Gets the integer value length of the audio file, rounded up.
+     * @return
+     */
     private int getAudioLength() {
         String command = "soxi -D "+Main.getCreationDir()+"/"+_creationName+"/"+_creationName+".wav";
         ProcessBuilder audioLenBuilder = new ProcessBuilder("bash","-c",command);
@@ -201,16 +209,31 @@ public class GetImagesTask extends Task<Void> {
         return -1;
     }
 
+    /**
+     * Download pictures from flikr.
+     */
     private void flickr() {
+
+        String apiKey = "e37d6b63e1b4bceb47a42a3a37f316e3";
+        String sharedSecret = "42ccf0520e0515f1";
         try{
-/*            String apiKey = "e37d6b63e1b4bceb47a42a3a37f316e3";
-            String sharedSecret = "42ccf0520e0515f1";*/
-            String apiKey = getAPIKey("apiKey");
-            String sharedSecret = getAPIKey("sharedSecret");
+
+            try {
+                apiKey = getAPIKey("apiKey");
+                sharedSecret = getAPIKey("sharedSecret");
+            } catch (Exception e) {
+                apiKey = "e37d6b63e1b4bceb47a42a3a37f316e3";
+                sharedSecret = "42ccf0520e0515f1";
+            }
+
+
+
             Flickr flickr = new Flickr(apiKey, sharedSecret, new REST());
             String query = _term;
             int resultsPerPage = _numImages;
             int page = 0;
+
+
 
             PhotosInterface photos = flickr.getPhotosInterface();
             SearchParameters params = new SearchParameters();
@@ -240,6 +263,13 @@ public class GetImagesTask extends Task<Void> {
 
        // System.out.println("\nDone");
     }
+
+    /**
+     * Get the api keys from a txt file.
+     * @param key
+     * @return
+     * @throws Exception
+     */
     public static String getAPIKey(String key) throws Exception {
         // TODO fix the following based on where you will have your config file stored
 
