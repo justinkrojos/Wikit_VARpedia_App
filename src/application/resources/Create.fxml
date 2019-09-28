@@ -13,32 +13,32 @@
 <AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="720.0" prefWidth="1280.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="application.controllers.CreateController">
    <children>
       <Text layoutX="626.0" layoutY="19.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Create a Creation" />
-      <TextArea fx:id="_textArea" layoutX="252.0" layoutY="34.0" prefHeight="600.0" prefWidth="884.0" />
+      <TextArea fx:id="_textArea" layoutX="299.0" layoutY="34.0" prefHeight="600.0" prefWidth="884.0" />
       <Text layoutX="14.0" layoutY="39.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Wikit Search Term" />
       <TextField fx:id="_termField" layoutX="11.0" layoutY="42.0" />
       <Button fx:id="btnSearch" layoutX="183.0" layoutY="42.0" mnemonicParsing="false" onAction="#handleSearch" text="Search" />
       <Text layoutX="12.0" layoutY="87.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Creation Name" />
       <TextField fx:id="_creationNameField" layoutX="12.0" layoutY="90.0" />
       <Text layoutX="22.0" layoutY="692.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Create Creation" />
-      <Button fx:id="btnCreate" layoutX="134.0" layoutY="674.0" mnemonicParsing="false" onAction="#mergeVideoAudio" text="CREATE" />
+      <Button fx:id="btnCreate" layoutX="1204.0" layoutY="693.0" mnemonicParsing="false" onAction="#mergeVideoAudio" text="CREATE" />
       <Text layoutX="13.0" layoutY="162.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Play Selected Text" />
       <Button fx:id="btnPlay" layoutX="146.0" layoutY="145.0" mnemonicParsing="false" onAction="#handleAudioPreview" text="Play" />
       <Text layoutX="15.0" layoutY="140.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Highlight text to select it." />
       <Text layoutX="13.0" layoutY="193.0" strokeType="OUTSIDE" strokeWidth="0.0" />
-      <Text layoutX="11.0" layoutY="269.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Enter number of images" />
-      <Button fx:id="btnImage" layoutX="183.0" layoutY="277.0" mnemonicParsing="false" onAction="#handleGetImages" text="Button" />
-      <TextField fx:id="_numImageField" layoutX="11.0" layoutY="277.0" />
+      <Text layoutX="24.0" layoutY="606.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Enter number of images" />
+      <Button fx:id="btnImage" layoutX="133.0" layoutY="674.0" mnemonicParsing="false" onAction="#handleGetImages" text="Create" />
+      <TextField fx:id="_numImageField" layoutX="24.0" layoutY="614.0" />
       <Button fx:id="btnCheckCreationName" layoutX="184.0" layoutY="90.0" mnemonicParsing="false" onAction="#handleCreationName" text="Check" />
       <TextField fx:id="_audioName" layoutX="11.0" layoutY="175.0" promptText="Name Selected Audio" />
       <Button fx:id="btnSave" layoutX="182.0" layoutY="175.0" mnemonicParsing="false" onAction="#handleSaveAudioBtn" prefHeight="53.0" prefWidth="61.0" text="Save" />
-      <ListView fx:id="_audioList" layoutX="13.0" layoutY="369.0" prefHeight="225.0" prefWidth="224.0">
+      <ListView fx:id="_audioList" layoutX="13.0" layoutY="264.0" prefHeight="225.0" prefWidth="224.0">
               <items>
                  <FXCollections fx:factory="observableArrayList">
                  </FXCollections>
               </items>
       </ListView>
-      <Text layoutX="12.0" layoutY="360.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Audio Queue" />
-      <Button fx:id="btnPreviewAudio" disable="true" layoutX="13.0" layoutY="595.0" mnemonicParsing="false" onAction="#handlePreviewBtn" prefHeight="26.0" prefWidth="158.0" text="Preview Audio" />
+      <Text layoutX="12.0" layoutY="255.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Audio Queue" />
+      <Button fx:id="btnPreviewAudio" disable="true" layoutX="13.0" layoutY="490.0" mnemonicParsing="false" onAction="#handlePreviewBtn" prefHeight="26.0" prefWidth="158.0" text="Preview Audio" />
       <Text layoutX="13.0" layoutY="220.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Save as:" />
       <ChoiceBox fx:id="voicesChoiceBox" layoutX="73.0" layoutY="201.0" prefHeight="26.0" prefWidth="109.0" value="Voice1">
               <items>
@@ -49,7 +49,7 @@
                  </FXCollections>
               </items>
       </ChoiceBox>
-      <Button fx:id="btnStopAudio" disable="true" layoutX="175.0" layoutY="595.0" mnemonicParsing="false" prefHeight="26.0" prefWidth="61.0" text="Stop" />
-      <Button fx:id="btnSaveAudioFile" disable="true" layoutX="16.0" layoutY="621.0" mnemonicParsing="false" prefHeight="26.0" prefWidth="218.0" onAction="#handleSaveFinalAudioBtn" text="Save Audio Queue " />
+      <Button fx:id="btnStopAudio" disable="true" layoutX="175.0" layoutY="490.0" mnemonicParsing="false" prefHeight="26.0" prefWidth="61.0" text="Stop" />
+      <Button fx:id="btnSaveAudioFile" disable="true" layoutX="16.0" layoutY="516.0" mnemonicParsing="false" onAction="#handleSaveFinalAudioBtn" prefHeight="26.0" prefWidth="218.0" text="Save Audio Queue " />
    </children>
 </AnchorPane>

@@ -56,8 +56,10 @@ public class CreateController {
     @FXML
     private Button btnSave;
 
+
     @FXML
     private Button btnCreate;
+
 
     @FXML
     private TextField _audioName;
@@ -83,6 +85,13 @@ public class CreateController {
     private Button btnSaveAudioFile;
 
     ArrayList<String> existingAudio = new ArrayList<String>();
+
+    public void initialize(){
+        btnCreate.setVisible(false);
+        btnCreate.setDisable(true);
+
+
+    }
 
     @FXML
     public void handleCreationName() {

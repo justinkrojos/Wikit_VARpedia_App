@@ -72,6 +72,10 @@ public class HomeController {
 
     public void initialize(){
         updateListTree();
+        btnBackward.setVisible(false);
+        btnForward.setVisible(false);
+        btnMute.setVisible(false);
+        btnPause.setVisible(false);
     }
 
     /**
