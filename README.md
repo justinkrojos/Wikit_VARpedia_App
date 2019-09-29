@@ -6,10 +6,15 @@ This application should be tested in the SOFTENG 206 updated VirtualBox image.
 The following libraries must be imported for the source code to work.
 
 JavaFX13
+
 flickr4java-3.0.1
+
 scribejava-apis-6.6.3
+
 scribejava-core-6.2.0
+
 slf4j-api-1.7.25
+
 slf4j-nop-1.7.26
 
 These libraries are included in the libs folder, excluding JavaFX13. 
@@ -20,7 +25,7 @@ The flickr API keys are located in flickr-api-keys.txt, in the same folder as th
 
 # Runnable jar
 This application should be run on the SOFTENG 206 Virtual Image.
-You can run the jar file with the included run.sh script.
+You can run the jar file with the included run.sh script, make sure its in the same folder as the jar file.
 Or from terminal
 >PATH=/home/student/Downloads/openjdk-13_linux-x64_bin/jdk-13/bin:$PATH
 >
