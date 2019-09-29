@@ -88,6 +88,17 @@ public class CreateController {
     private Stage _currentStage;
     private HomeController _homeController;
 
+    @FXML
+    private CheckBox step1;
+
+    @FXML
+    private CheckBox step2;
+
+    @FXML
+    private CheckBox step3;
+
+    @FXML
+    private CheckBox step4;
 
     /**
      * Check if creation name is taken, and if so let the user pick if they want to overwrite
@@ -156,6 +167,7 @@ public class CreateController {
                     _creationNameField.setDisable(true);
                     btnCheckCreationName.setText("Success!");
                     btnCheckCreationName.setDisable(true);
+                    step1.setSelected(true);
                 }
                 return;
             }
@@ -163,6 +175,7 @@ public class CreateController {
             _creationNameField.setDisable(true);
             btnCheckCreationName.setText("Success!");
             btnCheckCreationName.setDisable(true);
+            step1.setSelected(true);
 
 
 
@@ -258,7 +271,6 @@ public class CreateController {
             alert.showAndWait();
             return;
         }
-
         String term = _termField.getText();
         int numImages = Integer.parseInt(_numImageField.getText());
         String creationName = _creationNameField.getText();
@@ -283,9 +295,11 @@ public class CreateController {
             alert.showAndWait();
             return;
         }*/
+
         String creationName = _creationNameField.getText();
         MergeTask task = new MergeTask(creationName);
         team.submit(task);
+
         task.setOnSucceeded(new EventHandler<WorkerStateEvent>() {
             @Override
             public void handle(WorkerStateEvent workerStateEvent) {
@@ -425,6 +439,9 @@ public class CreateController {
                             alert.showAndWait();
 
                         } else {
+
+                            step2.setSelected(true);
+
                             existingAudio.add(_audioName.getText());
 
 
@@ -561,7 +578,7 @@ public class CreateController {
         AudioMergeTask audioMergeTask = new AudioMergeTask(_creationNameField.getText(), _audioList, btnPreviewAudio.isDisabled());
         team.submit(audioMergeTask);
         btnSaveAudioFile.setText("Save and Overwrite");
-
+        step3.setSelected(true);
     }
 
     /**

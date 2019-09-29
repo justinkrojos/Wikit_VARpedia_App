@@ -13,8 +13,6 @@ public enum Voices {
         this.voicesPackage = voicesPackage;
     }
 
-    Voices voices;
-
     public String getVoicePackage() {
         return voicesPackage;
     }
