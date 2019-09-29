@@ -27,6 +27,7 @@
       <Button fx:id="btnSearch" layoutX="778.0" layoutY="79.0" mnemonicParsing="false" onAction="#handleSearch" text="Search" />
       <Text layoutX="38.0" layoutY="96.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Creation Name:" />
       <TextField fx:id="_creationNameField" layoutX="145.0" layoutY="79.0" prefHeight="26.0" prefWidth="140.0" promptText="Enter name here..." />
+      <Button fx:id="btnCreate" layoutX="1204.0" layoutY="693.0" mnemonicParsing="false" onAction="#mergeVideoAudio" text="CREATE" />
       <Text layoutX="79.0" layoutY="202.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Preview as:" />
       <Button fx:id="btnPlay" layoutX="263.0" layoutY="184.0" mnemonicParsing="false" onAction="#handleAudioPreview" text="Play" />
       <Text layoutX="79.0" layoutY="178.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Highlight text to select it." />
