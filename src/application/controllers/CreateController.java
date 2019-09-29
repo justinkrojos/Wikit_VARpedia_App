@@ -328,6 +328,11 @@ public class CreateController {
         alert.show();
     }
 
+    /**
+     * Previews selected text
+     * @throws IOException
+     */
+
     @FXML
     public void handleAudioPreview() throws IOException {
 
@@ -357,8 +362,12 @@ public class CreateController {
         }
     }
 
+    /**
+     * Saves the chunk of text as a wav file
+     */
+
     @FXML
-    public void handleSaveAudioBtn(ActionEvent event) throws IOException, InterruptedException {
+    public void handleSaveAudioBtn() {
 
 
         if (_termField.getText().isEmpty()) {
@@ -502,9 +511,12 @@ public class CreateController {
         }
     }
 
+    /**
+     * Previews the entire audio queue.
+     */
 
     @FXML
-    public void handlePreviewBtn() throws IOException, InterruptedException {
+    public void handlePreviewBtn() {
 
         btnPreviewAudio.setDisable(true);
         btnStopAudio.setDisable(false);
@@ -542,6 +554,9 @@ public class CreateController {
 
     }
 
+    /**
+     * Saves the audio queue into a wav file.
+     */
     @FXML
     public void handleSaveFinalAudioBtn() {
         AudioMergeTask audioMergeTask = new AudioMergeTask(_creationNameField.getText(), _audioList, btnPreviewAudio.isDisabled());
@@ -549,6 +564,12 @@ public class CreateController {
         btnSaveAudioFile.setText("Save and Overwrite");
 
     }
+
+    /**
+     * Method to get Voice object based on choicebox.
+     * @param voiceCode
+     * @return
+     */
 
     public Voices getVoicesObject(String voiceCode) {
         if (voiceCode.equals("Voice1")) {
