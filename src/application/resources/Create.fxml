@@ -37,7 +37,7 @@
          <font>
             <Font size="17.0" />
          </font></Button>
-      <TextField fx:id="_numImageField" layoutX="209.0" layoutY="602.0" prefHeight="26.0" prefWidth="149.0" promptText="(1 - 10)" />
+      <TextField fx:id="_numImageField" layoutX="209.0" layoutY="602.0" prefHeight="26.0" prefWidth="149.0" promptText="(0 - 10)" />
       <Button fx:id="btnCheckCreationName" layoutX="285.0" layoutY="79.0" mnemonicParsing="false" onAction="#handleCreationName" prefHeight="26.0" prefWidth="74.0" text="Check" />
       <TextField fx:id="_audioName" layoutX="78.0" layoutY="228.0" promptText="Name Selected Audio" />
       <Button fx:id="btnSave" layoutX="249.0" layoutY="228.0" mnemonicParsing="false" onAction="#handleSaveAudioBtn" prefHeight="53.0" prefWidth="61.0" text="Save" />
