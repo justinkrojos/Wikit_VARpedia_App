@@ -107,13 +107,6 @@ public class CreateController {
         _homeController = homeController;
     }
 
-    public void initialize(){
-        btnCreate.setVisible(false);
-        btnCreate.setDisable(true);
-
-        // _currentStage = (Stage) _ap.getScene().getWindow();
-    }
-
     /**
      * Checks the creation name and handles overwriting creation name.
      */
