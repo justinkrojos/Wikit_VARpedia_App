@@ -39,7 +39,7 @@
          <font>
             <Font size="17.0" />
          </font></Button>
-      <TextField fx:id="_numImageField" layoutX="210.0" layoutY="584.0" prefHeight="26.0" prefWidth="149.0" promptText="(0 - 10)" />
+      <TextField fx:id="_numImageField" layoutX="210.0" layoutY="584.0" prefHeight="26.0" prefWidth="149.0" promptText="(1 - 10)" />
       <Button fx:id="btnCheckCreationName" layoutX="265.0" layoutY="103.0" mnemonicParsing="false" onAction="#handleCreationName" prefHeight="26.0" prefWidth="93.0" text="Check" />
       <TextField fx:id="_audioName" layoutX="78.0" layoutY="234.0" promptText="Name Selected Audio" />
       <Button fx:id="btnSave" layoutX="249.0" layoutY="234.0" mnemonicParsing="false" onAction="#handleSaveAudioBtn" prefHeight="53.0" prefWidth="61.0" text="Save" />
