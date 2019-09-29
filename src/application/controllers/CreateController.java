@@ -203,15 +203,8 @@ public class CreateController {
      */
     @FXML
     public void handleSearch() {
-        if (btnSearch.getText().equals("New Search")) {
-            _textArea.setText("");
-            _audioName.setText("");
-            _termField.setDisable(false);
-            _termField.setText("");
-            btnSearch.setText("Search");
-        }
 
-        else {
+
             WikitSearchTask task = new WikitSearchTask(_termField.getText());
             team.submit(task);
             btnSearch.setDisable(true);
@@ -230,13 +223,13 @@ public class CreateController {
                     }
                     else {
                         _textArea.setText(task.getOutput());
-                        btnSearch.setText("New Search");
-                        btnSearch.setDisable(false);
+                        btnSearch.setDisable(true);
+                        btnSearch.setText("Success!");
                         _termField.setDisable(true);
                     }
                 }
             });
-        }
+
     }
 
     /**
@@ -244,7 +237,7 @@ public class CreateController {
      */
     @FXML
     private void handleGetImages() {
-        if(btnCheckCreationName.isDisabled() == false || !btnSaveAudioFile.getText().equals("Save and Overwrite")) {
+        if(btnSearch.isDisabled() == false || btnCheckCreationName.isDisabled() == false || !btnSaveAudioFile.getText().equals("Save and Overwrite")) {
             Alert alert = new Alert(Alert.AlertType.INFORMATION);
             alert.setTitle("Cannot Create Creation");
             alert.setHeaderText(null);
@@ -383,7 +376,13 @@ public class CreateController {
     public void handleSaveAudioBtn() {
 
 
-        if (_termField.getText().isEmpty()) {
+        if (!btnSearch.getText().equals("Success!")) {
+            Alert alert = new Alert(Alert.AlertType.WARNING);
+            alert.setTitle("Wikit Search");
+            alert.setHeaderText("No words were highlighted");
+            alert.setContentText("Please wikit search a term and try again.");
+            alert.showAndWait();
+        } else if (_termField.getText().isEmpty()) {
             Alert alert = new Alert(Alert.AlertType.WARNING);
             alert.setTitle("Wikit Search");
             alert.setHeaderText("No words were highlighted");
