@@ -1,15 +1,6 @@
 package application;
 
 import javafx.concurrent.Task;
-import javafx.scene.layout.HBox;
-import javafx.scene.text.Text;
-import javafx.scene.control.ListView;
-
-import java.io.BufferedReader;
-import java.io.File;
-import java.io.FileNotFoundException;
-import java.io.InputStreamReader;
-import java.util.Scanner;
 
 public class PreviewAudioTask extends Task<Void> {
 
