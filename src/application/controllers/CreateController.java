@@ -231,12 +231,11 @@ public class CreateController {
      */
     @FXML
     private void handleGetImages() {
-        //TODO CHECK audio save button is pressed.
         if(btnCheckCreationName.isDisabled() == false || !btnSaveAudioFile.getText().equals("Save and Overwrite")) {
             Alert alert = new Alert(Alert.AlertType.INFORMATION);
-            alert.setTitle("Cannot get images");
+            alert.setTitle("Cannot Create Creation");
             alert.setHeaderText(null);
-            alert.setContentText("Cannot get images. Make sure a valid term or creation name is entered. And make sure you have a saved audio file.");
+            alert.setContentText("Could not create a creation. Make sure a valid term and creation name is entered. Make sure you have a Saved Audio Queue(Highlight some text, and click save, then press Save Audio Queue. You can combine multiple audio files).");
             alert.showAndWait();
             return;
         }
